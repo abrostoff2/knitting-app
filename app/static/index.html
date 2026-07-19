@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Knitting App — data flow test</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  input { font-size: 1rem; padding: 0.4rem; width: 300px; }
+  button { font-size: 1rem; padding: 0.4rem 0.8rem; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 0.5rem; border-bottom: 1px solid #ddd; cursor: pointer; }
+  li:hover { background: #f0f0f0; }
+  .meta { color: #666; font-size: 0.85rem; }
+  #status { color: #a00; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+  <h1>Yarn → Pattern search</h1>
+
+  <div>
+    <input id="query" placeholder="e.g. Mulberry Silk Isager Yarn" />
+    <button id="searchBtn">Search yarns</button>
+  </div>
+
+  <p id="status"></p>
+
+  <h2>Yarn matches</h2>
+  <ul id="yarnResults"></ul>
+
+  <h2>Patterns</h2>
+  <ul id="patternResults"></ul>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
