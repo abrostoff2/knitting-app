@@ -29,12 +29,15 @@ class ExactAttributeMatcher(YarnMatcher):
 
     def build_attribute_query(self, yarn: YarnDetail) -> dict[str, str]:
         first_fiber = yarn.yarn_fibers[0]
-        return {
+        query = {
             "weight": yarn.yarn_weight.name or "",
             "fiber-content": (first_fiber.fiber_type.name or "").lower(),
             "fiberc": str(len(yarn.yarn_fibers)),
             # "ya": f"{yarn.yarn_weight.ply}-ply",
         }
+        if yarn.min_needle_size and yarn.min_needle_size.metric:
+            query["needles"] = f"{yarn.min_needle_size.metric}mm"
+        return query
 
 
 def get_matcher() -> YarnMatcher:
