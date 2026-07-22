@@ -133,7 +133,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBack, onBackToSe
                     </span>
                   )}
                   {pattern.designer?.favorites_count !== undefined && (
-                    <span className={styles.badge}>⭐ {pattern.designer.favorites_count} favorites</span>
+                    <span className={styles.badge}>⭐ Designer: {pattern.designer.favorites_count}</span>
                   )}
                   {pattern.rating_average && (
                     <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
