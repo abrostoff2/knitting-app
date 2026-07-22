@@ -132,8 +132,11 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBack, onBackToSe
                       {pattern.free ? 'Free' : 'Paid'}
                     </span>
                   )}
+                  {pattern.designer?.favorites_count !== undefined && (
+                    <span className={styles.badge}>⭐ {pattern.designer.favorites_count} favorites</span>
+                  )}
                   {pattern.rating_average && (
-                    <span className={styles.badge}>⭐ {pattern.rating_average.toFixed(1)}</span>
+                    <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
                   )}
                 </div>
               </div>

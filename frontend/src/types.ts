@@ -31,6 +31,7 @@ export interface Designer {
   id?: number
   name?: string
   permalink?: string
+  favorites_count?: number
 }
 
 export interface Pattern {
