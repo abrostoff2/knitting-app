@@ -20,7 +20,7 @@ class YarnPatternMatches(BaseModel):
 
 
 async def find_patterns_for_yarn(
-    client: RavelryClient, matcher: YarnMatcher, yarn_id: int
+    client: RavelryClient, matcher: YarnMatcher, yarn_id: int, pattern_query: str = ""
 ) -> YarnPatternMatches:
     logger.info(f"Finding patterns for yarn ID {yarn_id}")
     source_yarn = await client.get_yarn(yarn_id)
@@ -37,13 +37,16 @@ async def find_patterns_for_yarn(
     top_similar = [y for y in top_similar if y.id != source_yarn.id][:SIMILAR_YARN_LIMIT]
     logger.info(f"Top similar yarns (excluding source): {[y.name for y in top_similar]}")
 
-    logger.info(f"Searching patterns for {len(top_similar)} yarn(s) (max {MAX_CONCURRENT_PATTERN_REQUESTS} concurrent)...")
+    logger.info(f"Searching patterns for {len(top_similar)} yarn(s) (max {MAX_CONCURRENT_PATTERN_REQUESTS} concurrent)" + (f" with filter: {pattern_query}" if pattern_query else "") + "...")
 
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_PATTERN_REQUESTS)
 
     async def search_with_limit(yarn):
         async with semaphore:
-            return await client.search_patterns(yarn.permalink)
+            query = yarn.permalink
+            if pattern_query:
+                query = f"{query} {pattern_query}"
+            return await client.search_patterns(query)
 
     pattern_responses = await asyncio.gather(
         *(search_with_limit(y) for y in top_similar)

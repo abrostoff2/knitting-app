@@ -42,10 +42,13 @@ async function searchYarns() {
 
 async function loadPatterns(yarnId) {
   patternResultsEl.innerHTML = "";
+  const patternFilter = document.getElementById("patternFilter").value.trim();
   setStatus("Fetching similar yarns and patterns (this calls Ravelry ~11 times, may take a few seconds)...");
 
   try {
-    const res = await fetch(`/api/yarns/${yarnId}/patterns`);
+    const url = new URL(`/api/yarns/${yarnId}/patterns`, window.location.origin);
+    if (patternFilter) url.searchParams.append("pattern_query", patternFilter);
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();
 

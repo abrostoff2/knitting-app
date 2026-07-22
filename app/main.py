@@ -42,10 +42,10 @@ async def search_yarns(query: str):
 
 
 @app.get("/api/yarns/{yarn_id}/patterns", response_model=YarnPatternMatches)
-async def patterns_for_yarn(yarn_id: int):
-    logger.info(f"Finding patterns for yarn {yarn_id}")
+async def patterns_for_yarn(yarn_id: int, pattern_query: str = ""):
+    logger.info(f"Finding patterns for yarn {yarn_id}" + (f" with pattern query: {pattern_query}" if pattern_query else ""))
     try:
-        result = await find_patterns_for_yarn(_client(app), get_matcher(), yarn_id)
+        result = await find_patterns_for_yarn(_client(app), get_matcher(), yarn_id, pattern_query)
         logger.info(f"Found {len(result.patterns)} pattern(s) for yarn {yarn_id}")
         return result
     except HTTPStatusError as exc:
