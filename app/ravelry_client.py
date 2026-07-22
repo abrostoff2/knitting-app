@@ -51,9 +51,9 @@ class RavelryClient:
         return result
 
     async def search_patterns(self, query: str) -> PatternSearchResponse:
-        logger.debug(f"GET /patterns/search.json?query={query}")
+        logger.info(f"GET /patterns/search.json?query={query}")
         resp = await self._client.get("/patterns/search.json", params={"query": query})
         resp.raise_for_status()
         result = PatternSearchResponse.model_validate(resp.json())
-        logger.debug(f"  → {len(result.patterns)} patterns")
+        logger.info(f"  → {len(result.patterns)} patterns found for query: {query}")
         return result

@@ -1,4 +1,5 @@
 import logging
+import sys
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -11,6 +12,12 @@ from app.matching import get_matcher
 from app.models import YarnSearchResult
 from app.ravelry_client import RavelryClient
 from app.service import YarnPatternMatches, find_patterns_for_yarn
+
+logging.basicConfig(
+    level=logging.WARNING,
+    format="%(levelname)s:%(name)s:%(message)s",
+    stream=sys.stdout,
+)
 
 logger = logging.getLogger(__name__)
 
