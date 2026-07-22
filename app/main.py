@@ -14,7 +14,7 @@ from app.ravelry_client import RavelryClient
 from app.service import YarnPatternMatches, find_patterns_for_yarn
 
 logging.basicConfig(
-    level=logging.warning,
+    level=logging.WARNING,
     format="%(levelname)s:%(name)s:%(message)s",
     stream=sys.stdout,
 )

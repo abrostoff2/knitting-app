@@ -3,7 +3,11 @@
     "allow": [
       "Bash(uv add *)",
       "Bash(uv run *)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(npm create *)",
+      "Bash(npm --version)",
+      "Read(//usr/local/**)",
+      "Read(//opt/**)"
     ]
   }
 }
