@@ -14,7 +14,7 @@ from app.ravelry_client import RavelryClient
 from app.service import YarnPatternMatches, find_patterns_for_yarn
 
 logging.basicConfig(
-    level=logging.WARNING,
+    level=logging.warning,
     format="%(levelname)s:%(name)s:%(message)s",
     stream=sys.stdout,
 )
@@ -46,6 +46,18 @@ async def search_yarns(query: str):
         logger.error(f"Yarn search failed: {exc}")
         raise HTTPException(status_code=exc.response.status_code, detail=str(exc)) from exc
     return result.yarns
+
+
+@app.get("/api/yarns/{yarn_id}")
+async def get_yarn(yarn_id: int):
+    logger.info(f"Getting yarn details for ID {yarn_id}")
+    try:
+        yarn = await _client(app).get_yarn(yarn_id)
+        logger.info(f"Got yarn: {yarn.name}")
+        return yarn
+    except HTTPStatusError as exc:
+        logger.error(f"Failed to get yarn {yarn_id}: {exc}")
+        raise HTTPException(status_code=exc.response.status_code, detail=str(exc)) from exc
 
 
 @app.get("/api/yarns/{yarn_id}/patterns", response_model=YarnPatternMatches)
