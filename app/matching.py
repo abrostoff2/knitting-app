@@ -19,19 +19,22 @@ class YarnMatcher(ABC):
 
 
 class ExactAttributeMatcher(YarnMatcher):
-    """Matches on weight + first fiber + ply, all as exact strings.
+    """Matches on weight + all fibers + fiber count, all as exact strings.
 
     Mirrors the original Postman collection's "Search Yarn By Attributes"
-    request. Current limitations carried over from that spec:
-    - only the first fiber is considered (single-fiber-content yarns only)
-    - fiber/weight/ply must match exactly, no fuzzy or adjacent matches
+    request. Current limitations:
+    - fiber/weight/needle must match exactly, no fuzzy or adjacent matches
+    - percentage composition is not queryable via Ravelry search API; checked
+      client-side via is_similar_enough() after fetching full yarn details
     """
 
     def build_attribute_query(self, yarn: YarnDetail) -> dict[str, str]:
-        first_fiber = yarn.yarn_fibers[0]
+        fiber_names = "+".join(
+            (f.fiber_type.name or "").lower() for f in yarn.yarn_fibers
+        )
         query = {
             "weight": yarn.yarn_weight.name or "",
-            "fiber-content": (first_fiber.fiber_type.name or "").lower(),
+            "fiber-content": fiber_names,
             "fiberc": str(len(yarn.yarn_fibers)),
             # "ya": f"{yarn.yarn_weight.ply}-ply",
         }
