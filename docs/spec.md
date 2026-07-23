@@ -81,6 +81,7 @@ Known limitations:
 | `fiberc` | fiber count (e.g. `2`) | number of distinct fibers in the source yarn; combined with `fiber-content`, ensures results have exactly the same fiber set |
 | `ya` | ply + `-ply` (e.g. `2-ply`) | present in the original prototype but currently commented out in `ExactAttributeMatcher` |
 | `needles` | min needle size in mm (e.g. `3.0mm`) | only included when the source yarn has a min needle size |
+| `sort` | sort order (e.g. `popularity`) | optional; supported by both `/yarns/search.json` and `/patterns/search.json` for result ordering |
 
 A working Postman collection with example requests against these endpoints (yarn search, yarn-by-id, attribute search, pattern search) lives in the Obsidian vault (`Ravelry.postman_collection.json`) rather than in this repo — it's a manual API-exploration tool, not living documentation, so it isn't duplicated here.
 

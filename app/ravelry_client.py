@@ -27,9 +27,12 @@ class RavelryClient:
         await self._client.aclose()
 
     @cached(ttl_seconds=600)
-    async def search_yarns(self, query: str) -> YarnSearchResponse:
-        logger.debug(f"GET /yarns/search.json?query={query}")
-        resp = await self._client.get("/yarns/search.json", params={"query": query})
+    async def search_yarns(self, query: str, sort: str | None = None) -> YarnSearchResponse:
+        params = {"query": query}
+        if sort:
+            params["sort"] = sort
+        logger.debug(f"GET /yarns/search.json?{params}")
+        resp = await self._client.get("/yarns/search.json", params=params)
         resp.raise_for_status()
         result = YarnSearchResponse.model_validate(resp.json())
         logger.debug(f"  → {len(result.yarns)} results")
@@ -57,9 +60,12 @@ class RavelryClient:
         return result
 
     @cached(ttl_seconds=1800)
-    async def search_patterns(self, query: str) -> PatternSearchResponse:
-        logger.info(f"GET /patterns/search.json?query={query}")
-        resp = await self._client.get("/patterns/search.json", params={"query": query})
+    async def search_patterns(self, query: str, sort: str | None = None) -> PatternSearchResponse:
+        params = {"query": query}
+        if sort:
+            params["sort"] = sort
+        logger.info(f"GET /patterns/search.json?{params}")
+        resp = await self._client.get("/patterns/search.json", params=params)
         resp.raise_for_status()
         result = PatternSearchResponse.model_validate(resp.json())
         logger.info(f"  → {len(result.patterns)} patterns found for query: {query}")
