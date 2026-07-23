@@ -51,7 +51,7 @@ class StubClient:
     async def search_yarns_by_attributes(self, params):
         return YarnSearchResponse(yarns=self._similar_yarns)
 
-    async def search_patterns(self, query):
+    async def search_patterns(self, query, category=None):
         permalink = query.split(" ")[0]
         return PatternSearchResponse(patterns=self._patterns_by_permalink.get(permalink, []))
 
@@ -95,7 +95,7 @@ async def test_appends_optional_filter_to_pattern_query(mulberry_silk):
     captured_queries = []
 
     class CapturingClient(StubClient):
-        async def search_patterns(self, query):
+        async def search_patterns(self, query, category=None):
             captured_queries.append(query)
             return PatternSearchResponse(patterns=[])
 

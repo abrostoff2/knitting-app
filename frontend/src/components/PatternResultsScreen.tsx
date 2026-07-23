@@ -11,6 +11,16 @@ const ITEMS_PER_PAGE = 20
 
 type SortBy = 'rating' | 'designer'
 
+const PATTERN_CATEGORIES = [
+  { value: '', label: 'All Categories' },
+  { value: 'clothing', label: 'Clothing' },
+  { value: 'accessories', label: 'Accessories' },
+  { value: 'home', label: 'Home' },
+  { value: 'medical', label: 'Medical' },
+  { value: 'pet', label: 'Pet' },
+  { value: 'components', label: 'Components' },
+]
+
 const formatNumber = (num: number): string => {
   return num.toLocaleString('en-US')
 }
@@ -24,9 +34,10 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [similarYarnsPage, setSimilarYarnsPage] = useState(1)
   const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
   const [sortBy, setSortBy] = useState<SortBy>('rating')
+  const [selectedCategory, setSelectedCategory] = useState('')
 
   const loadPatterns = useCallback(
-    async (filter: string, similarYarnsPageNum: number = 1) => {
+    async (filter: string, similarYarnsPageNum: number = 1, category: string = '') => {
       setIsLoading(true)
       setHasSearched(true)
       setPatternsPage(1)
@@ -36,6 +47,9 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         const url = new URL(`/api/yarns/${yarn.id}/patterns`, window.location.origin)
         if (filter.trim()) {
           url.searchParams.append('pattern_query', filter)
+        }
+        if (category) {
+          url.searchParams.append('category', category)
         }
         url.searchParams.append('page', similarYarnsPageNum.toString())
 
@@ -58,18 +72,18 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   React.useEffect(() => {
     // Note: patternFilter intentionally excluded from deps—search happens only
     // on explicit Filter button click via handleFilterChange, not on keystroke.
-    loadPatterns(patternFilter)
+    loadPatterns(patternFilter, 1, selectedCategory)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPatterns])
+  }, [loadPatterns, selectedCategory])
 
   const handleFilterChange = async (e: React.FormEvent) => {
     e.preventDefault()
-    await loadPatterns(patternFilter)
+    await loadPatterns(patternFilter, 1, selectedCategory)
   }
 
   const handleClearFilter = async () => {
     setPatternFilter('')
-    await loadPatterns('')
+    await loadPatterns('', 1, selectedCategory)
   }
 
   const noResults = hasSearched && !isLoading && patterns.length === 0
@@ -151,18 +165,37 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
       )}
 
       {hasSearched && !noResults && (
-        <div className={styles.sortControls}>
-          <label htmlFor="sort-select">Sort by:</label>
-          <select
-            id="sort-select"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortBy)}
-            disabled={isLoading}
-            className={styles.sortSelect}
-          >
-            <option value="rating">Pattern Rating</option>
-            <option value="designer">Designer Popularity</option>
-          </select>
+        <div className={styles.controlsRow}>
+          <div className={styles.sortControls}>
+            <label htmlFor="sort-select">Sort by:</label>
+            <select
+              id="sort-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortBy)}
+              disabled={isLoading}
+              className={styles.sortSelect}
+            >
+              <option value="rating">Pattern Rating</option>
+              <option value="designer">Designer Popularity</option>
+            </select>
+          </div>
+
+          <div className={styles.categoryControls}>
+            <label htmlFor="category-select">Category:</label>
+            <select
+              id="category-select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              disabled={isLoading}
+              className={styles.categorySelect}
+            >
+              {PATTERN_CATEGORIES.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 

@@ -5,6 +5,15 @@ Concrete, near-term, actionable items. Bigger open questions and direction live 
 - Implement frontend filtering on various attributes for patterns - for example filter where paid/free, sort by most popuar designer, etc
 - [ ] Deploy app
 - [x] Add parameter sort=popularity to both yarn search and pattern search 
+- [x] Add filtering based on category filtered like this 
+    - example pc=clothing
+    - start with just these
+        - clothing
+        - accessories
+        - Home
+        - Medical
+        - Pet 
+        - Components 
 - [ ] Figure out a smart way to match not 100% fiber yarns
 - [ ] Filter by gauge and needle size (backend support exists implicitly via matching; needs UI + API surface)
 - [x] Decide on to-do/roadmap/feedback process for building in public
