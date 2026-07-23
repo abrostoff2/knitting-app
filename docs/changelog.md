@@ -2,6 +2,7 @@
 
 Newest first. Reconstructed from git history at the time this file was created (2026-07-23); add new entries as they happen rather than backfilling from git going forward.
 
+- **2026-07-23 — Fix filter UX and format large numbers with commas.** Pattern filter no longer searches on every keystroke—only when user clicks the Filter button. Designer favorites count now displays with thousands separators (e.g., "1,234" instead of "1234") for readability. All 11 tests pass; frontend lint/tsc pass.
 - **2026-07-23 — Make pattern ratings more prominent in UI.** Pattern cards now display a large rating badge (with star) at the top right next to the pattern name. Rating shows as "X.X ★" in a light yellow background. Still appears in smaller form in the footer badges for consistency. Makes it easier to quickly scan pattern quality. All 11 tests pass; frontend lint/tsc pass.
 - **2026-07-23 — Add frontend sorting of patterns by designer popularity.** PatternResultsScreen now includes a "Sort by" dropdown with options: "Pattern Rating" (default) and "Designer Popularity" (by designer's total favorites). Sort selection persists across pagination. Sorts within currently-fetched patterns (not across all results). All 11 tests pass; frontend lint/tsc pass.
 - **2026-07-23 — Sort yarn and pattern search by popularity by default.** Both `search_yarns()` and `search_patterns()` now always include `sort=popularity` in Ravelry API calls. Results are now sorted by popularity instead of relevance. All 11 tests pass.

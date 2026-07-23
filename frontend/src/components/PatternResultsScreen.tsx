@@ -11,6 +11,10 @@ const ITEMS_PER_PAGE = 20
 
 type SortBy = 'rating' | 'designer'
 
+const formatNumber = (num: number): string => {
+  return num.toLocaleString('en-US')
+}
+
 export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) => {
   const [patternFilter, setPatternFilter] = useState('')
   const [patterns, setPatterns] = useState<Pattern[]>([])
@@ -52,8 +56,11 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   )
 
   React.useEffect(() => {
+    // Note: patternFilter intentionally excluded from deps—search happens only
+    // on explicit Filter button click via handleFilterChange, not on keystroke.
     loadPatterns(patternFilter)
-  }, [loadPatterns, patternFilter])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadPatterns])
 
   const handleFilterChange = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -208,7 +215,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
                       </span>
                     )}
                     {pattern.designer?.favorites_count !== undefined && (
-                      <span className={styles.badge}>⭐ Designer: {pattern.designer.favorites_count}</span>
+                      <span className={styles.badge}>⭐ Designer: {formatNumber(pattern.designer.favorites_count)}</span>
                     )}
                     {pattern.rating_average && (
                       <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
