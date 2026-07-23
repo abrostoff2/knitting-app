@@ -29,15 +29,20 @@ Pick a concrete todo item from `docs/todo.md`, complete the work, verify it pass
    - If it's about the UI, remember the frontend is intentionally minimal — no design pass.
    - Prefer editing existing files to creating new ones.
 
-5. **Verify.** Before marking anything done, run:
+5. **Update docs BEFORE verifying.** Don't skip this step:
+   - If the item changed behavior/API: update `docs/spec.md` (user flow, API, data models, matching logic, etc.)
+   - If the item affects design decisions: update `docs/decisions.md` with a new entry (why this approach, tradeoffs, what was rejected)
+   - If the item is notable: add a dated entry to `docs/changelog.md` describing what shipped and why
+   - If roadmap items are now addressed: update `docs/roadmap.md`
+   - Mark the item done in `docs/todo.md` by changing `[ ]` to `[x]`
+   
+   This ensures docs stay in sync with code. Leaving docs out of date is a bigger problem than incomplete implementation.
+
+6. **Verify.** Before calling anything done, run:
    - Backend: `uv run pytest` and `uv run ruff check .`
    - Frontend (if changed): `cd frontend && npm run lint` and `npx tsc --noEmit`
    
    If any check fails, fix it. Do not mark the item complete with known-broken checks.
-
-6. **Update docs.** 
-   - Mark the item done in `docs/todo.md` by changing `[ ]` to `[x]`.
-   - Add a dated entry to `docs/changelog.md` describing what shipped and why.
 
 7. **Commit.** Create a single commit summarizing the work and verification:
    ```
@@ -55,6 +60,7 @@ Pick a concrete todo item from `docs/todo.md`, complete the work, verify it pass
 
 ## Notes
 
+- **Docs are not optional.** If you skip updating spec/decisions/changelog, you've only shipped half the item. Out-of-date docs cause way more friction later than taking 5 minutes now.
 - This is for shipping small, concrete items — not for open-ended roadmap questions.
 - If the item is vague (e.g., "improve matching quality"), ask the user to pick a more specific sub-item.
 - If the item will take more than an hour or needs user input (e.g., "decide on monetization"), ask first rather than spending time on research.
