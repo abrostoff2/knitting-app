@@ -29,7 +29,10 @@ async def find_patterns_for_yarn(
     attribute_query = matcher.build_attribute_query(source_yarn)
     logger.info(f"Matching query: {attribute_query}")
     similar = await client.search_yarns_by_attributes(attribute_query)
-    logger.info(f"Found {len(similar.yarns)} similar yarn(s), selecting top {SIMILAR_YARN_LIMIT} by rating")
+    logger.info(
+        f"Found {len(similar.yarns)} similar yarn(s), "
+        f"selecting top {SIMILAR_YARN_LIMIT} by rating"
+    )
 
     top_similar = sorted(
         similar.yarns, key=lambda y: y.rating_average or 0, reverse=True
@@ -37,7 +40,13 @@ async def find_patterns_for_yarn(
     top_similar = [y for y in top_similar if y.id != source_yarn.id][:SIMILAR_YARN_LIMIT]
     logger.info(f"Top similar yarns (excluding source): {[y.name for y in top_similar]}")
 
-    logger.info(f"Searching patterns for {len(top_similar)} yarn(s) (max {MAX_CONCURRENT_PATTERN_REQUESTS} concurrent)" + (f" with filter: {pattern_query}" if pattern_query else "") + "...")
+    msg = (
+        f"Searching patterns for {len(top_similar)} yarn(s) "
+        f"(max {MAX_CONCURRENT_PATTERN_REQUESTS} concurrent)"
+    )
+    if pattern_query:
+        msg += f" with filter: {pattern_query}"
+    logger.info(msg + "...")
 
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_PATTERN_REQUESTS)
 

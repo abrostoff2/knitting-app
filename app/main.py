@@ -62,7 +62,10 @@ async def get_yarn(yarn_id: int):
 
 @app.get("/api/yarns/{yarn_id}/patterns", response_model=YarnPatternMatches)
 async def patterns_for_yarn(yarn_id: int, pattern_query: str = ""):
-    logger.info(f"Finding patterns for yarn {yarn_id}" + (f" with pattern query: {pattern_query}" if pattern_query else ""))
+    msg = f"Finding patterns for yarn {yarn_id}"
+    if pattern_query:
+        msg += f" with pattern query: {pattern_query}"
+    logger.info(msg)
     try:
         result = await find_patterns_for_yarn(_client(app), get_matcher(), yarn_id, pattern_query)
         logger.info(f"Found {len(result.patterns)} pattern(s) for yarn {yarn_id}")

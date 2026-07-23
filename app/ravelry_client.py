@@ -52,7 +52,8 @@ class RavelryClient:
         resp.raise_for_status()
         result = YarnSearchResponse.model_validate(resp.json())
         logger.debug(f"  → {len(result.yarns)} results")
-        logger.debug(f"     Top 10 by rating: {[f'{y.name} ({y.rating_average})' for y in sorted(result.yarns, key=lambda y: y.rating_average or 0, reverse=True)[:10]]}")
+        top_10 = sorted(result.yarns, key=lambda y: y.rating_average or 0, reverse=True)[:10]
+        logger.debug(f"     Top 10 by rating: {[f'{y.name} ({y.rating_average})' for y in top_10]}")
         return result
 
     @cached(ttl_seconds=1800)
