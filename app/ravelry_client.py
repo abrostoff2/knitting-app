@@ -28,9 +28,7 @@ class RavelryClient:
 
     @cached(ttl_seconds=600)
     async def search_yarns(self, query: str, sort: str | None = None) -> YarnSearchResponse:
-        params = {"query": query}
-        if sort:
-            params["sort"] = sort
+        params = {"query": query, "sort": sort or "popularity"}
         logger.debug(f"GET /yarns/search.json?{params}")
         resp = await self._client.get("/yarns/search.json", params=params)
         resp.raise_for_status()
@@ -61,9 +59,7 @@ class RavelryClient:
 
     @cached(ttl_seconds=1800)
     async def search_patterns(self, query: str, sort: str | None = None) -> PatternSearchResponse:
-        params = {"query": query}
-        if sort:
-            params["sort"] = sort
+        params = {"query": query, "sort": sort or "popularity"}
         logger.info(f"GET /patterns/search.json?{params}")
         resp = await self._client.get("/patterns/search.json", params=params)
         resp.raise_for_status()
