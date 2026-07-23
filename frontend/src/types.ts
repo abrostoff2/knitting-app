@@ -48,6 +48,9 @@ export interface YarnPatternMatches {
   source_yarn: YarnDetail
   similar_yarns: Yarn[]
   patterns: Pattern[]
+  current_page: number
+  total_pages: number
+  has_more: boolean
 }
 
 export type Screen = 'search' | 'confirm' | 'results'

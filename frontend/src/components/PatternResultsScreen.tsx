@@ -14,30 +14,39 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [patterns, setPatterns] = useState<Pattern[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [patternsPage, setPatternsPage] = useState(1)
+  const [similarYarnsPage, setSimilarYarnsPage] = useState(1)
+  const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
 
-  const loadPatterns = useCallback(async (filter: string) => {
-    setIsLoading(true)
-    setHasSearched(true)
-    setCurrentPage(1)
+  const loadPatterns = useCallback(
+    async (filter: string, similarYarnsPageNum: number = 1) => {
+      setIsLoading(true)
+      setHasSearched(true)
+      setPatternsPage(1)
+      setSimilarYarnsPage(similarYarnsPageNum)
 
-    try {
-      const url = new URL(`/api/yarns/${yarn.id}/patterns`, window.location.origin)
-      if (filter.trim()) {
-        url.searchParams.append('pattern_query', filter)
+      try {
+        const url = new URL(`/api/yarns/${yarn.id}/patterns`, window.location.origin)
+        if (filter.trim()) {
+          url.searchParams.append('pattern_query', filter)
+        }
+        url.searchParams.append('page', similarYarnsPageNum.toString())
+
+        const res = await fetch(url)
+        if (!res.ok) throw new Error('Failed to load patterns')
+
+        const data = await res.json()
+        setPatterns(data.patterns || [])
+        setHasMoreSimilarYarns(data.has_more || false)
+      } catch {
+        setPatterns([])
+        setHasMoreSimilarYarns(false)
+      } finally {
+        setIsLoading(false)
       }
-
-      const res = await fetch(url)
-      if (!res.ok) throw new Error('Failed to load patterns')
-
-      const data = await res.json()
-      setPatterns(data.patterns || [])
-    } catch {
-      setPatterns([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [yarn.id])
+    },
+    [yarn.id]
+  )
 
   React.useEffect(() => {
     loadPatterns(patternFilter)
@@ -55,21 +64,24 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
 
   const noResults = hasSearched && !isLoading && patterns.length === 0
 
-  const totalPages = Math.ceil(patterns.length / ITEMS_PER_PAGE)
-  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE
+  const patternPagesInBatch = Math.ceil(patterns.length / ITEMS_PER_PAGE)
+  const startIdx = (patternsPage - 1) * ITEMS_PER_PAGE
   const endIdx = startIdx + ITEMS_PER_PAGE
   const paginatedPatterns = patterns.slice(startIdx, endIdx)
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+  const handleNextPage = async () => {
+    if (patternsPage < patternPagesInBatch) {
+      setPatternsPage(patternsPage + 1)
+      window.scrollTo(0, 0)
+    } else if (hasMoreSimilarYarns) {
+      await loadPatterns(patternFilter, similarYarnsPage + 1)
       window.scrollTo(0, 0)
     }
   }
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+    if (patternsPage > 1) {
+      setPatternsPage(patternsPage - 1)
       window.scrollTo(0, 0)
     }
   }
@@ -167,21 +179,22 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
             ))}
           </div>
 
-          {totalPages > 1 && (
+          {(patternPagesInBatch > 1 || hasMoreSimilarYarns) && (
             <div className={styles.pagination}>
               <button
                 onClick={handlePrevPage}
-                disabled={currentPage === 1}
+                disabled={patternsPage === 1}
                 className={styles.paginationButton}
               >
                 ← Previous
               </button>
               <span className={styles.pageInfo}>
-                Page {currentPage} of {totalPages}
+                Page {patternsPage} of {patternPagesInBatch}
+                {hasMoreSimilarYarns && ' (more yarns available)'}
               </span>
               <button
                 onClick={handleNextPage}
-                disabled={currentPage === totalPages}
+                disabled={patternsPage === patternPagesInBatch && !hasMoreSimilarYarns}
                 className={styles.paginationButton}
               >
                 Next →

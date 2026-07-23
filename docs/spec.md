@@ -14,7 +14,7 @@ Because the interesting problem is the backend data flow, the UI is intentionall
 4. User optionally types a search term (e.g. "hat"). Field starts blank — no default value.
 5. App shows a list of matching patterns.
 6. User clicks a pattern to view/get it (external link out via Ravelry — the app builds the link client-side from the pattern's `permalink`, no backend resolution involved).
-7. **Pagination (Step 1 done):** Results are paginated to show 20 items per page, with Previous/Next buttons at the bottom. *Step 2 (lazy-fetch similar yarns when pagination exhausts the current batch) is pending.*
+7. **Pagination (Steps 1 & 2 done):** Results are paginated to show 20 items per page. When user reaches the last page within a batch of similar yarns (top 10 by rating), the Next button fetches patterns for the next batch of similar yarns, if available. Similar yarns are fetched in groups of 10, with automatic lazy-loading as the user paginate through patterns.
 
 This is a single continuous funnel: **Yarn Search → Yarn Confirm → Pattern Results**.
 
