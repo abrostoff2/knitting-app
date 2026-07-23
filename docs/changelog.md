@@ -2,6 +2,7 @@
 
 Newest first. Reconstructed from git history at the time this file was created (2026-07-23); add new entries as they happen rather than backfilling from git going forward.
 
+- **2026-07-23 — Add frontend sorting of patterns by designer popularity.** PatternResultsScreen now includes a "Sort by" dropdown with options: "Pattern Rating" (default) and "Designer Popularity" (by designer's total favorites). Sort selection persists across pagination. Sorts within currently-fetched patterns (not across all results). All 11 tests pass; frontend lint/tsc pass.
 - **2026-07-23 — Sort yarn and pattern search by popularity by default.** Both `search_yarns()` and `search_patterns()` now always include `sort=popularity` in Ravelry API calls. Results are now sorted by popularity instead of relevance. All 11 tests pass.
 - **2026-07-23 — Add lazy-fetching of similar yarns in pagination (Step 2).** Backend now fetches similar yarns in batches of 10 instead of all upfront. Added `page` parameter to `/api/yarns/{yarn_id}/patterns` endpoint and pagination metadata to response (`current_page`, `total_pages`, `has_more`). Frontend now lazy-loads next batch of similar yarns when user paginate past the current batch. All 11 tests pass; frontend lint/tsc pass.
 - **2026-07-23 — Add pagination to pattern results (Step 1).** Frontend now shows 20 patterns per page with Previous/Next buttons in `PatternResultsScreen`. Page resets when filter changes. All 11 tests pass; frontend lint/tsc pass. Step 2 (lazy-fetch additional similar yarns when pagination reaches the end) pending.

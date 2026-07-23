@@ -9,6 +9,8 @@ interface Props {
 
 const ITEMS_PER_PAGE = 20
 
+type SortBy = 'rating' | 'designer'
+
 export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) => {
   const [patternFilter, setPatternFilter] = useState('')
   const [patterns, setPatterns] = useState<Pattern[]>([])
@@ -17,6 +19,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [patternsPage, setPatternsPage] = useState(1)
   const [similarYarnsPage, setSimilarYarnsPage] = useState(1)
   const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
+  const [sortBy, setSortBy] = useState<SortBy>('rating')
 
   const loadPatterns = useCallback(
     async (filter: string, similarYarnsPageNum: number = 1) => {
@@ -64,10 +67,23 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
 
   const noResults = hasSearched && !isLoading && patterns.length === 0
 
-  const patternPagesInBatch = Math.ceil(patterns.length / ITEMS_PER_PAGE)
+  const getSortedPatterns = () => {
+    const sorted = [...patterns]
+    if (sortBy === 'designer') {
+      sorted.sort(
+        (a, b) => (b.designer?.favorites_count || 0) - (a.designer?.favorites_count || 0)
+      )
+    } else {
+      sorted.sort((a, b) => (b.rating_average || 0) - (a.rating_average || 0))
+    }
+    return sorted
+  }
+
+  const sortedPatterns = getSortedPatterns()
+  const patternPagesInBatch = Math.ceil(sortedPatterns.length / ITEMS_PER_PAGE)
   const startIdx = (patternsPage - 1) * ITEMS_PER_PAGE
   const endIdx = startIdx + ITEMS_PER_PAGE
-  const paginatedPatterns = patterns.slice(startIdx, endIdx)
+  const paginatedPatterns = sortedPatterns.slice(startIdx, endIdx)
 
   const handleNextPage = async () => {
     if (patternsPage < patternPagesInBatch) {
@@ -125,6 +141,22 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
             Clear filter
           </button>
         </p>
+      )}
+
+      {hasSearched && !noResults && (
+        <div className={styles.sortControls}>
+          <label htmlFor="sort-select">Sort by:</label>
+          <select
+            id="sort-select"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortBy)}
+            disabled={isLoading}
+            className={styles.sortSelect}
+          >
+            <option value="rating">Pattern Rating</option>
+            <option value="designer">Designer Popularity</option>
+          </select>
+        </div>
       )}
 
       {isLoading && <div className={styles.loading}>Loading patterns...</div>}
