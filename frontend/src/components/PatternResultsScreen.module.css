@@ -179,11 +179,42 @@
   flex-direction: column;
 }
 
+.patternHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .patternName {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
+  flex: 1;
+}
+
+.patternRating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #fff3cd;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ratingValue {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.ratingLabel {
+  font-size: 1.1rem;
+  color: #ffc107;
 }
 
 .designer {

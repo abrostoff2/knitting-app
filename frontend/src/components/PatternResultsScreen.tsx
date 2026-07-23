@@ -189,7 +189,15 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
                   />
                 )}
                 <div className={styles.patternContent}>
-                  <h3 className={styles.patternName}>{pattern.name}</h3>
+                  <div className={styles.patternHeader}>
+                    <h3 className={styles.patternName}>{pattern.name}</h3>
+                    {pattern.rating_average && (
+                      <div className={styles.patternRating}>
+                        <span className={styles.ratingValue}>{pattern.rating_average.toFixed(1)}</span>
+                        <span className={styles.ratingLabel}>★</span>
+                      </div>
+                    )}
+                  </div>
                   <p className={styles.designer}>
                     {pattern.designer?.name || 'Unknown designer'}
                   </p>
