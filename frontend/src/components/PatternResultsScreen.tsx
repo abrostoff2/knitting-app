@@ -7,15 +7,19 @@ interface Props {
   onBackToSearch: () => void
 }
 
+const ITEMS_PER_PAGE = 20
+
 export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) => {
   const [patternFilter, setPatternFilter] = useState('')
   const [patterns, setPatterns] = useState<Pattern[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const loadPatterns = useCallback(async (filter: string) => {
     setIsLoading(true)
     setHasSearched(true)
+    setCurrentPage(1)
 
     try {
       const url = new URL(`/api/yarns/${yarn.id}/patterns`, window.location.origin)
@@ -50,6 +54,25 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   }
 
   const noResults = hasSearched && !isLoading && patterns.length === 0
+
+  const totalPages = Math.ceil(patterns.length / ITEMS_PER_PAGE)
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIdx = startIdx + ITEMS_PER_PAGE
+  const paginatedPatterns = patterns.slice(startIdx, endIdx)
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+      window.scrollTo(0, 0)
+    }
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+      window.scrollTo(0, 0)
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -104,44 +127,68 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
           <p>No patterns found for this yarn yet.</p>
         </div>
       ) : (
-        <div className={styles.patternGrid}>
-          {patterns.map((pattern) => (
-            <a
-              key={pattern.id}
-              href={`https://www.ravelry.com/patterns/library/${pattern.permalink}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.patternCard}
-            >
-              {pattern.first_photo?.medium_url && (
-                <img
-                  src={pattern.first_photo.medium_url}
-                  alt={pattern.name}
-                  className={styles.patternPhoto}
-                />
-              )}
-              <div className={styles.patternContent}>
-                <h3 className={styles.patternName}>{pattern.name}</h3>
-                <p className={styles.designer}>
-                  {pattern.designer?.name || 'Unknown designer'}
-                </p>
-                <div className={styles.badges}>
-                  {pattern.free !== undefined && (
-                    <span className={`${styles.badge} ${pattern.free ? styles.free : styles.paid}`}>
-                      {pattern.free ? 'Free' : 'Paid'}
-                    </span>
-                  )}
-                  {pattern.designer?.favorites_count !== undefined && (
-                    <span className={styles.badge}>⭐ Designer: {pattern.designer.favorites_count}</span>
-                  )}
-                  {pattern.rating_average && (
-                    <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
-                  )}
+        <>
+          <div className={styles.patternGrid}>
+            {paginatedPatterns.map((pattern) => (
+              <a
+                key={pattern.id}
+                href={`https://www.ravelry.com/patterns/library/${pattern.permalink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.patternCard}
+              >
+                {pattern.first_photo?.medium_url && (
+                  <img
+                    src={pattern.first_photo.medium_url}
+                    alt={pattern.name}
+                    className={styles.patternPhoto}
+                  />
+                )}
+                <div className={styles.patternContent}>
+                  <h3 className={styles.patternName}>{pattern.name}</h3>
+                  <p className={styles.designer}>
+                    {pattern.designer?.name || 'Unknown designer'}
+                  </p>
+                  <div className={styles.badges}>
+                    {pattern.free !== undefined && (
+                      <span className={`${styles.badge} ${pattern.free ? styles.free : styles.paid}`}>
+                        {pattern.free ? 'Free' : 'Paid'}
+                      </span>
+                    )}
+                    {pattern.designer?.favorites_count !== undefined && (
+                      <span className={styles.badge}>⭐ Designer: {pattern.designer.favorites_count}</span>
+                    )}
+                    {pattern.rating_average && (
+                      <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
-        </div>
+              </a>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className={styles.paginationButton}
+              >
+                ← Previous
+              </button>
+              <span className={styles.pageInfo}>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className={styles.paginationButton}
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
