@@ -30,7 +30,7 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
       }
 
       onSelect(yarns, query)
-    } catch (err) {
+    } catch {
       setError('Failed to search. Please try again.')
     }
   }

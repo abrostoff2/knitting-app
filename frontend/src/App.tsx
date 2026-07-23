@@ -39,10 +39,6 @@ export const App: React.FC = () => {
     setSelectedYarn(null)
   }
 
-  const handleBackToConfirm = () => {
-    setScreen('confirm')
-  }
-
   return (
     <div className={styles.app}>
       {screen === 'search' && (
@@ -61,7 +57,6 @@ export const App: React.FC = () => {
       {screen === 'results' && selectedYarn && (
         <PatternResultsScreen
           yarn={selectedYarn}
-          onBack={handleBackToConfirm}
           onBackToSearch={handleBackToSearch}
         />
       )}

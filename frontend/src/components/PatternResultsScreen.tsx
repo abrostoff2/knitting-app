@@ -1,24 +1,19 @@
-import React, { useState } from 'react'
-import { Yarn, Pattern, YarnDetail } from '../types'
+import React, { useState, useCallback } from 'react'
+import { Pattern, YarnDetail } from '../types'
 import styles from './PatternResultsScreen.module.css'
 
 interface Props {
   yarn: YarnDetail
-  onBack: () => void
   onBackToSearch: () => void
 }
 
-export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBack, onBackToSearch }) => {
+export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) => {
   const [patternFilter, setPatternFilter] = useState('')
   const [patterns, setPatterns] = useState<Pattern[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
 
-  React.useEffect(() => {
-    loadPatterns(patternFilter)
-  }, [])
-
-  const loadPatterns = async (filter: string) => {
+  const loadPatterns = useCallback(async (filter: string) => {
     setIsLoading(true)
     setHasSearched(true)
 
@@ -33,12 +28,16 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBack, onBackToSe
 
       const data = await res.json()
       setPatterns(data.patterns || [])
-    } catch (err) {
+    } catch {
       setPatterns([])
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [yarn.id])
+
+  React.useEffect(() => {
+    loadPatterns(patternFilter)
+  }, [loadPatterns, patternFilter])
 
   const handleFilterChange = async (e: React.FormEvent) => {
     e.preventDefault()
