@@ -2,6 +2,7 @@
 
 Newest first. Reconstructed from git history at the time this file was created (2026-07-23); add new entries as they happen rather than backfilling from git going forward.
 
+- **2026-07-23 — Match on full fiber set, not just first fiber (Cycle 1).** Changed `ExactAttributeMatcher` to query with all fibers joined via `+` (e.g., `fiber-content=silk+cotton`) instead of just the first. Combined with `fiberc` (fiber count), this constrains results to yarns with exactly that fiber composition. Ravelry's search API has no percentage filter, so percentage-based tolerance will be checked client-side via `is_similar_enough()` in Cycle 2. Updated matching logic docs and test to reflect new behavior.
 - **2026-07-23 — Add test suite, linters, and a Verify step to the dev workflow.** Added `tests/` (pytest) covering `matching.py`, `service.py`, `cache.py`, and the `extra="allow"` convention in `models.py`. Added ruff config for the backend and eslint config for the frontend. Updated `/sync-docs` to run tests + lint as a required Verify step before calling a change done, and added task-sizing/commit/plan-first conventions to `CLAUDE.md`. See `docs/decisions.md` for rationale and what was deliberately skipped.
 
   **Verified 2026-07-23**: dependencies installed and all tests/linters pass. Fixed Python import/line-length issues, frontend component prop cleanup, TypeScript config (moduleResolution), and added CSS module type declarations.
