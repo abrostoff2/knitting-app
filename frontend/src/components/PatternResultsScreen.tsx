@@ -106,10 +106,11 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   }
 
   const sortedPatterns = getSortedPatterns()
-  const patternPagesInBatch = Math.ceil(sortedPatterns.length / ITEMS_PER_PAGE)
+  const filteredBySource = sortedPatterns.filter((p) => p.match_type === patternSource)
+  const patternPagesInBatch = Math.ceil(filteredBySource.length / ITEMS_PER_PAGE)
   const startIdx = (patternsPage - 1) * ITEMS_PER_PAGE
   const endIdx = startIdx + ITEMS_PER_PAGE
-  const paginatedPatterns = sortedPatterns.slice(startIdx, endIdx)
+  const paginatedPatterns = filteredBySource.slice(startIdx, endIdx)
 
   const handleNextPage = async () => {
     if (patternsPage < patternPagesInBatch) {
@@ -240,9 +241,6 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
       ) : (
         <>
           {(() => {
-            const filteredPatterns = patterns.filter((p) => p.match_type === patternSource)
-            const filteredPaginated = paginatedPatterns.filter((p) => p.match_type === patternSource)
-
             const renderPatternCard = (matchedPattern: MatchedPattern) => {
               const { pattern, matched_yarn } = matchedPattern
               return (
@@ -299,7 +297,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
             return (
               <>
                 <div className={styles.patternGrid}>
-                  {filteredPaginated.map(renderPatternCard)}
+                  {paginatedPatterns.map(renderPatternCard)}
                 </div>
               </>
             )
