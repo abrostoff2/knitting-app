@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Pattern, YarnDetail } from '../types'
+import { MatchedPattern, YarnDetail } from '../types'
 import styles from './PatternResultsScreen.module.css'
 
 interface Props {
@@ -27,7 +27,7 @@ const formatNumber = (num: number): string => {
 
 export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) => {
   const [patternFilter, setPatternFilter] = useState('')
-  const [patterns, setPatterns] = useState<Pattern[]>([])
+  const [patterns, setPatterns] = useState<MatchedPattern[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const [patternsPage, setPatternsPage] = useState(1)
@@ -92,10 +92,10 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
     const sorted = [...patterns]
     if (sortBy === 'designer') {
       sorted.sort(
-        (a, b) => (b.designer?.favorites_count || 0) - (a.designer?.favorites_count || 0)
+        (a, b) => (b.pattern.designer?.favorites_count || 0) - (a.pattern.designer?.favorites_count || 0)
       )
     } else {
-      sorted.sort((a, b) => (b.rating_average || 0) - (a.rating_average || 0))
+      sorted.sort((a, b) => (b.pattern.rating_average || 0) - (a.pattern.rating_average || 0))
     }
     return sorted
   }
@@ -212,52 +212,90 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         </div>
       ) : (
         <>
-          <div className={styles.patternGrid}>
-            {paginatedPatterns.map((pattern) => (
-              <a
-                key={pattern.id}
-                href={`https://www.ravelry.com/patterns/library/${pattern.permalink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.patternCard}
-              >
-                {pattern.first_photo?.medium_url && (
-                  <img
-                    src={pattern.first_photo.medium_url}
-                    alt={pattern.name}
-                    className={styles.patternPhoto}
-                  />
-                )}
-                <div className={styles.patternContent}>
-                  <div className={styles.patternHeader}>
-                    <h3 className={styles.patternName}>{pattern.name}</h3>
-                    {pattern.rating_average && (
-                      <div className={styles.patternRating}>
-                        <span className={styles.ratingValue}>{pattern.rating_average.toFixed(1)}</span>
-                        <span className={styles.ratingLabel}>★</span>
+          {(() => {
+            const exactPatterns = patterns.filter((p) => p.match_type === 'exact')
+            const exactInView = paginatedPatterns.filter((p) => p.match_type === 'exact')
+            const similarInView = paginatedPatterns.filter((p) => p.match_type === 'similar')
+
+            const renderPatternCard = (matchedPattern: MatchedPattern) => {
+              const { pattern, matched_yarn } = matchedPattern
+              return (
+                <a
+                  key={pattern.id}
+                  href={`https://www.ravelry.com/patterns/library/${pattern.permalink}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.patternCard}
+                >
+                  {pattern.first_photo?.medium_url && (
+                    <img
+                      src={pattern.first_photo.medium_url}
+                      alt={pattern.name}
+                      className={styles.patternPhoto}
+                    />
+                  )}
+                  <div className={styles.patternContent}>
+                    <div className={styles.patternHeader}>
+                      <div>
+                        <h3 className={styles.patternName}>{pattern.name}</h3>
+                        {matched_yarn && (
+                          <p className={styles.viaYarn}>via {matched_yarn.name}</p>
+                        )}
                       </div>
-                    )}
+                      {pattern.rating_average && (
+                        <div className={styles.patternRating}>
+                          <span className={styles.ratingValue}>{pattern.rating_average.toFixed(1)}</span>
+                          <span className={styles.ratingLabel}>★</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className={styles.designer}>
+                      {pattern.designer?.name || 'Unknown designer'}
+                    </p>
+                    <div className={styles.badges}>
+                      {pattern.free !== undefined && (
+                        <span className={`${styles.badge} ${pattern.free ? styles.free : styles.paid}`}>
+                          {pattern.free ? 'Free' : 'Paid'}
+                        </span>
+                      )}
+                      {pattern.designer?.favorites_count !== undefined && (
+                        <span className={styles.badge}>⭐ Designer: {formatNumber(pattern.designer.favorites_count)}</span>
+                      )}
+                      {pattern.rating_average && (
+                        <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
+                      )}
+                    </div>
                   </div>
-                  <p className={styles.designer}>
-                    {pattern.designer?.name || 'Unknown designer'}
-                  </p>
-                  <div className={styles.badges}>
-                    {pattern.free !== undefined && (
-                      <span className={`${styles.badge} ${pattern.free ? styles.free : styles.paid}`}>
-                        {pattern.free ? 'Free' : 'Paid'}
-                      </span>
-                    )}
-                    {pattern.designer?.favorites_count !== undefined && (
-                      <span className={styles.badge}>⭐ Designer: {formatNumber(pattern.designer.favorites_count)}</span>
-                    )}
-                    {pattern.rating_average && (
-                      <span className={styles.badge}>★ {pattern.rating_average.toFixed(1)}</span>
-                    )}
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
+                </a>
+              )
+            }
+
+            return (
+              <>
+                {exactInView.length > 0 && (
+                  <>
+                    <h2 className={styles.sectionTitle}>Made for this yarn</h2>
+                    <div className={styles.patternGrid}>
+                      {exactInView.map(renderPatternCard)}
+                    </div>
+                  </>
+                )}
+
+                {similarInView.length > 0 && (
+                  <>
+                    <h2 className={styles.sectionTitle}>
+                      {exactPatterns.length === 0
+                        ? 'No patterns are written for this exact yarn yet — here\'s what works with similar yarns'
+                        : 'Patterns for similar yarns'}
+                    </h2>
+                    <div className={styles.patternGrid}>
+                      {similarInView.map(renderPatternCard)}
+                    </div>
+                  </>
+                )}
+              </>
+            )
+          })()}
 
           {(patternPagesInBatch > 1 || hasMoreSimilarYarns) && (
             <div className={styles.pagination}>

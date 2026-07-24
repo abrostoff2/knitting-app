@@ -2,9 +2,20 @@
 
 ## Overview
 
-The knitting app helps someone go from "I have this yarn" to "here are patterns that will work with it." You type a yarn name, confirm which yarn you meant (Ravelry often has several yarns with the same name), and the app finds yarns with similar attributes, then surfaces patterns written for those similar yarns.
+The knitting app helps someone go from "I have this yarn" to "here are patterns that will work with it." You type a yarn name, confirm which yarn you meant (Ravelry often has several yarns with the same name), and the app shows patterns written for that exact yarn (when they exist) plus patterns written for similar yarns — so you see everything you could plausibly make with what you have, not just the (often small) set of patterns designed around that specific yarn.
 
 Because the interesting problem is the backend data flow, the UI is intentionally minimal — three screens, no extra chrome. Its job is to make the flow testable, not to be a polished product yet.
+
+## Why this app exists
+
+Most yarn/pattern tools (including Ravelry's own pattern pages) assume you go **pattern-first**: pick a pattern you love, then buy the yarn it calls for. That's a real and common way to knit, but it's not the only one, and it's not what this app is for.
+
+This app is for going **yarn-first** — you already have the yarn (or are standing in front of it) and want to know what you could make with it. That happens for a few different reasons:
+
+- **Spontaneous/in-store**: you walk into a yarn shop that day with no plan, see what's actually on the shelf, and want to decide what to make based on what's there — not go home, find a pattern, and come back.
+- **Availability-constrained**: you live somewhere that doesn't stock the yarns popular pattern designers write for (a common experience outside the US/UK yarn market). The yarn you can actually get isn't the yarn most patterns assume, so you need to go from "here's what I have access to" to "here's what I can make with it," not the other way around.
+
+Because of this, pattern results deliberately include **both**: patterns written for the exact yarn (the strongest possible match, when one exists — most yarns have few or none) and patterns written for similar yarns (which expand the pool considerably). Exact matches are always at least as good as a substitute, so they're ranked first.
 
 ## User flow
 
@@ -33,20 +44,22 @@ sequenceDiagram
     User->>App: Select yarn
     App->>RavelryAPI: GET /yarns/{id}
     RavelryAPI-->>App: Yarn attributes
+    App->>RavelryAPI: GET /patterns/search (source yarn's own permalink)
+    RavelryAPI-->>App: Exact-match patterns
     App->>RavelryAPI: GET /yarns/search (by attributes)
     RavelryAPI-->>App: Top 10 similar yarns (by rating)
     loop for each similar yarn
         App->>RavelryAPI: GET /patterns/search
         RavelryAPI-->>App: Patterns
     end
-    App-->>User: Deduped patterns, sorted by rating
+    App-->>User: Exact matches first, then deduped similar-yarn patterns, each group sorted by rating
 ```
 
 ## Screens (frontend)
 
 - `YarnSearchScreen` — search box, list of name matches.
 - `YarnConfirmScreen` — confirm the specific yarn (photo, company, weight).
-- `PatternResultsScreen` — final pattern list, sorted by rating, with designer/favorites info.
+- `PatternResultsScreen` — final pattern list: patterns for the exact yarn first, then patterns for similar yarns, each group sorted by rating, with designer/favorites info. See "Pattern match types" below for how these are told apart in the UI (still being worked out).
 
 ## API (backend)
 
@@ -95,8 +108,27 @@ Used for matching and worth keeping in one place as Ravelry's taxonomy is large 
 
 **Other attributes used in matching**: knit gauge (numeric), min/max needle size.
 
+## Pattern match types
+
+Pattern results come from two sources, and this is intentional (see "Why this app exists" above), not a bug to dedupe away: patterns written for the exact source yarn, and patterns written for yarns similar to it. A pattern found via the source yarn is always classified as "exact," even if it would have also turned up under a similar yarn's search — exact is the stronger, truer claim.
+
+**In the UI** (`PatternResultsScreen`):
+- The two groups are rendered as separate sections with section titles.
+- Exact-match group: "Made for this yarn" (appears first).
+- Similar-match group: "Patterns for similar yarns" (appears second).
+- If the exact group is empty, the similar group's heading becomes: "No patterns are written for this exact yarn yet — here's what works with similar yarns."
+- Each similar-match card shows "via {yarn.name}" below the pattern name to indicate which yarn it matched via.
+- Each group is sorted by rating internally; groups are concatenated (not one blended sort across both).
+
+**In the API** (`MatchedPattern` model):
+```python
+class MatchedPattern(BaseModel):
+    pattern: Pattern
+    match_type: str  # "exact" or "similar"
+    matched_yarn: YarnSearchResult | None = None  # None for exact matches
+```
+
 ## Non-goals (for now)
 
-- Not handling multi-fiber-composition matching.
 - Not filtering by gauge or needle size in the UI yet (see `roadmap.md`).
 - No auth/user accounts — single-user, local dev tool at this stage.

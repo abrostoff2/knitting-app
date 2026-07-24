@@ -14,10 +14,16 @@ SIMILAR_YARNS_PER_PAGE = 10
 MAX_CONCURRENT_PATTERN_REQUESTS = 2
 
 
+class MatchedPattern(BaseModel):
+    pattern: Pattern
+    match_type: str  # "exact" or "similar"
+    matched_yarn: YarnSearchResult | None = None  # None for exact matches
+
+
 class YarnPatternMatches(BaseModel):
     source_yarn: YarnDetail
     similar_yarns: list[YarnSearchResult]
-    patterns: list[Pattern]
+    patterns: list[MatchedPattern]
     current_page: int
     total_pages: int
     has_more: bool
@@ -63,6 +69,14 @@ async def find_patterns_for_yarn(
             has_more=has_more,
         )
 
+    logger.info("Fetching patterns for exact source yarn")
+    source_query = source_yarn.permalink
+    if pattern_query:
+        source_query = f"{source_query} {pattern_query}"
+    exact_response = await client.search_patterns(source_query, category=category)
+    exact_patterns = exact_response.patterns
+    logger.info(f"Found {len(exact_patterns)} exact-match pattern(s)")
+
     logger.info(
         f"Page {page}: fetching patterns for {len(page_similar)} similar yarn(s) "
         f"(max {MAX_CONCURRENT_PATTERN_REQUESTS} concurrent)"
@@ -80,29 +94,45 @@ async def find_patterns_for_yarn(
     pattern_responses = await asyncio.gather(
         *(search_with_limit(y) for y in page_similar)
     )
-    total_patterns = sum(len(r.patterns) for r in pattern_responses)
-    logger.info(f"Found {total_patterns} pattern(s) across all yarn(s)")
 
     seen_ids: set[int] = set()
-    patterns: list[Pattern] = []
-    for response in pattern_responses:
-        for pattern in response.patterns:
-            if pattern.id in seen_ids:
-                continue
-            seen_ids.add(pattern.id)
-            patterns.append(pattern)
+    matched_patterns: list[MatchedPattern] = []
 
-    logger.info(f"After deduping: {len(patterns)} unique pattern(s)")
-    patterns.sort(key=lambda p: p.rating_average or 0, reverse=True)
+    for pattern in exact_patterns:
+        if pattern.id not in seen_ids:
+            seen_ids.add(pattern.id)
+            matched_patterns.append(MatchedPattern(pattern=pattern, match_type="exact"))
+
+    for i, response in enumerate(pattern_responses):
+        yarn = page_similar[i]
+        for pattern in response.patterns:
+            if pattern.id not in seen_ids:
+                seen_ids.add(pattern.id)
+                matched_patterns.append(
+                    MatchedPattern(pattern=pattern, match_type="similar", matched_yarn=yarn)
+                )
+
+    exact_count = sum(1 for mp in matched_patterns if mp.match_type == "exact")
+    similar_count = sum(1 for mp in matched_patterns if mp.match_type == "similar")
     logger.info(
-        f"Page {page}: {len(patterns)} patterns sorted by rating; "
-        f"total_pages={total_pages}, has_more={has_more}"
+        f"Page {page}: {exact_count} exact + {similar_count} similar = "
+        f"{len(matched_patterns)} total unique pattern(s)"
     )
+
+    exact_patterns_list = [mp for mp in matched_patterns if mp.match_type == "exact"]
+    similar_patterns_list = [mp for mp in matched_patterns if mp.match_type == "similar"]
+
+    exact_patterns_list.sort(key=lambda mp: mp.pattern.rating_average or 0, reverse=True)
+    similar_patterns_list.sort(
+        key=lambda mp: mp.pattern.rating_average or 0, reverse=True
+    )
+
+    final_patterns = exact_patterns_list + similar_patterns_list
 
     return YarnPatternMatches(
         source_yarn=source_yarn,
         similar_yarns=page_similar,
-        patterns=patterns,
+        patterns=final_patterns,
         current_page=page,
         total_pages=total_pages,
         has_more=has_more,

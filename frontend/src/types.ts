@@ -44,10 +44,18 @@ export interface Pattern {
   first_photo?: YarnPhoto
 }
 
+export type MatchType = 'exact' | 'similar'
+
+export interface MatchedPattern {
+  pattern: Pattern
+  match_type: MatchType
+  matched_yarn?: Yarn | null
+}
+
 export interface YarnPatternMatches {
   source_yarn: YarnDetail
   similar_yarns: Yarn[]
-  patterns: Pattern[]
+  patterns: MatchedPattern[]
   current_page: number
   total_pages: number
   has_more: boolean

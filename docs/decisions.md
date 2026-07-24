@@ -2,6 +2,14 @@
 
 Short log of "why X over Y" — not a design doc, just enough context that a future session (you or Claude) doesn't re-litigate a settled call. Newest first.
 
+## Include patterns for the exact source yarn, not only similar yarns
+
+Originally the app's conceit was purely "find similar yarns, surface patterns for those" (see `docs/spec.md`'s original Overview). Reversed: pattern results now include both patterns written for the exact source yarn (fetched directly via its own permalink, same mechanism already used per similar yarn) and patterns for similar yarns, with exact matches ranked first.
+
+Why: the app is for yarn-first discovery — someone standing in a shop deciding what to make from what's on the shelf, or someone whose local market doesn't stock the yarns popular designers write for, going from "here's what I have" to "here's what I can make." In both cases, if a pattern happens to exist for the exact yarn, that's strictly the best possible answer and hiding it because the app started out framed around substitutes would be a real product gap, not a simplification. Similar-yarn matches still matter because most yarns have few or no patterns written specifically for them — exact matches expand rarely, similar-yarn matches are what make the tool useful most of the time.
+
+Still open: how the two groups are visually distinguished in the UI, and whether the ranking should stay as two separately-sorted groups concatenated rather than one blended sort — see `spec.md`'s "Pattern match types" section (marked as a draft, not yet implemented).
+
 ## Match on all fibers via `+`-joined `fiber-content`, not just the first fiber
 
 Changed `ExactAttributeMatcher.build_attribute_query` to send all fibers (e.g. `fiber-content=silk+cotton`) joined with `+` instead of just the first. Ravelry's search supports AND semantics: when combined with `fiberc=2`, it constrains results to exactly that 2-fiber set, no more, no less.

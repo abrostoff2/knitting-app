@@ -14,6 +14,7 @@ Concrete, near-term, actionable items. Bigger open questions and direction live 
         - Medical
         - Pet 
         - Components 
+- [x] Add patterns for the exact source yarn (not just similar yarns) — tag each result as exact vs. similar match, exact-match group ranked first (see `spec.md` "Pattern match types")
 - [ ] Figure out a smart way to match not 100% fiber yarns
 - [ ] Filter by gauge and needle size (backend support exists implicitly via matching; needs UI + API surface)
 - [x] Decide on to-do/roadmap/feedback process for building in public
