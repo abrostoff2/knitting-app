@@ -113,12 +113,10 @@ Used for matching and worth keeping in one place as Ravelry's taxonomy is large 
 Pattern results come from two sources, and this is intentional (see "Why this app exists" above), not a bug to dedupe away: patterns written for the exact source yarn, and patterns written for yarns similar to it. A pattern found via the source yarn is always classified as "exact," even if it would have also turned up under a similar yarn's search — exact is the stronger, truer claim.
 
 **In the UI** (`PatternResultsScreen`):
-- The two groups are rendered as separate sections with section titles.
-- Exact-match group: "Made for this yarn" (appears first).
-- Similar-match group: "Patterns for similar yarns" (appears second).
-- If the exact group is empty, the similar group's heading becomes: "No patterns are written for this exact yarn yet — here's what works with similar yarns."
+- A toggle at the top lets users switch between "This Yarn" (exact matches) and "Similar Yarns" (similar matches).
+- Defaults to "This Yarn" if exact patterns exist; defaults to "Similar Yarns" if no exact patterns exist.
 - Each similar-match card shows "via {yarn.name}" below the pattern name to indicate which yarn it matched via.
-- Each group is sorted by rating internally; groups are concatenated (not one blended sort across both).
+- Results within each source are sorted by rating (via the Sort By control).
 
 **In the API** (`MatchedPattern` model):
 ```python

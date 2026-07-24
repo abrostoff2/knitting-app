@@ -10,6 +10,7 @@ interface Props {
 const ITEMS_PER_PAGE = 20
 
 type SortBy = 'rating' | 'designer'
+type PatternSource = 'exact' | 'similar'
 
 const PATTERN_CATEGORIES = [
   { value: '', label: 'All Categories' },
@@ -35,6 +36,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
   const [sortBy, setSortBy] = useState<SortBy>('rating')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [patternSource, setPatternSource] = useState<PatternSource>('exact')
 
   const loadPatterns = useCallback(
     async (filter: string, similarYarnsPageNum: number = 1, category: string = '') => {
@@ -73,8 +75,11 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
     // Note: patternFilter intentionally excluded from deps—search happens only
     // on explicit Filter button click via handleFilterChange, not on keystroke.
     loadPatterns(patternFilter, 1, selectedCategory)
+    // When patterns load, determine which source to show by default
+    const exactPatterns = patterns.filter((p) => p.match_type === 'exact')
+    setPatternSource(exactPatterns.length > 0 ? 'exact' : 'similar')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPatterns, selectedCategory])
+  }, [loadPatterns, selectedCategory, patterns.length])
 
   const handleFilterChange = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -166,6 +171,28 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
 
       {hasSearched && !noResults && (
         <div className={styles.controlsRow}>
+          <div className={styles.sourceControls}>
+            <label>Show:</label>
+            <div className={styles.sourceToggle}>
+              {patterns.some((p) => p.match_type === 'exact') && (
+                <button
+                  className={`${styles.sourceButton} ${patternSource === 'exact' ? styles.active : ''}`}
+                  onClick={() => setPatternSource('exact')}
+                  disabled={isLoading}
+                >
+                  This Yarn
+                </button>
+              )}
+              <button
+                className={`${styles.sourceButton} ${patternSource === 'similar' ? styles.active : ''}`}
+                onClick={() => setPatternSource('similar')}
+                disabled={isLoading}
+              >
+                Similar Yarns
+              </button>
+            </div>
+          </div>
+
           <div className={styles.sortControls}>
             <label htmlFor="sort-select">Sort by:</label>
             <select
@@ -213,9 +240,8 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
       ) : (
         <>
           {(() => {
-            const exactPatterns = patterns.filter((p) => p.match_type === 'exact')
-            const exactInView = paginatedPatterns.filter((p) => p.match_type === 'exact')
-            const similarInView = paginatedPatterns.filter((p) => p.match_type === 'similar')
+            const filteredPatterns = patterns.filter((p) => p.match_type === patternSource)
+            const filteredPaginated = paginatedPatterns.filter((p) => p.match_type === patternSource)
 
             const renderPatternCard = (matchedPattern: MatchedPattern) => {
               const { pattern, matched_yarn } = matchedPattern
@@ -272,27 +298,9 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
 
             return (
               <>
-                {exactInView.length > 0 && (
-                  <>
-                    <h2 className={styles.sectionTitle}>Made for this yarn</h2>
-                    <div className={styles.patternGrid}>
-                      {exactInView.map(renderPatternCard)}
-                    </div>
-                  </>
-                )}
-
-                {similarInView.length > 0 && (
-                  <>
-                    <h2 className={styles.sectionTitle}>
-                      {exactPatterns.length === 0
-                        ? 'No patterns are written for this exact yarn yet — here\'s what works with similar yarns'
-                        : 'Patterns for similar yarns'}
-                    </h2>
-                    <div className={styles.patternGrid}>
-                      {similarInView.map(renderPatternCard)}
-                    </div>
-                  </>
-                )}
+                <div className={styles.patternGrid}>
+                  {filteredPaginated.map(renderPatternCard)}
+                </div>
               </>
             )
           })()}
