@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { MatchedPattern, YarnDetail } from '../types'
+import { FilterPanel } from './FilterPanel'
 import styles from './PatternResultsScreen.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
@@ -37,11 +38,12 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [similarYarnsPage, setSimilarYarnsPage] = useState(1)
   const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
   const [sortBy, setSortBy] = useState<SortBy>('rating')
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [patternSource, setPatternSource] = useState<PatternSource>('exact')
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
 
   const loadPatterns = useCallback(
-    async (filter: string, similarYarnsPageNum: number = 1, category: string = '') => {
+    async (filter: string, similarYarnsPageNum: number = 1, categories: string[] = []) => {
       setIsLoading(true)
       setHasSearched(true)
       setPatternsPage(1)
@@ -53,8 +55,8 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         if (filter.trim()) {
           params.append('pattern_query', filter)
         }
-        if (category) {
-          params.append('category', category)
+        if (categories.length > 0) {
+          params.append('category', categories.join('|'))
         }
         params.append('page', similarYarnsPageNum.toString())
         if (params.toString()) {
@@ -81,23 +83,29 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   )
 
   React.useEffect(() => {
-    // Note: patternFilter intentionally excluded from deps—search happens only
-    // on explicit Filter button click via handleFilterChange, not on keystroke.
-    loadPatterns(patternFilter, 1, selectedCategory)
-    // When patterns load, determine which source to show by default
-    const exactPatterns = patterns.filter((p) => p.match_type === 'exact')
-    setPatternSource(exactPatterns.length > 0 ? 'exact' : 'similar')
+    loadPatterns(patternFilter, 1, selectedCategories)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPatterns, selectedCategory, patterns.length])
+  }, [loadPatterns, selectedCategories])
+
+  React.useEffect(() => {
+    if (hasSearched) {
+      const exactPatterns = patterns.filter((p) => p.match_type === 'exact')
+      setPatternSource(exactPatterns.length > 0 ? 'exact' : 'similar')
+    }
+  }, [patterns, hasSearched])
 
   const handleFilterChange = async (e: React.FormEvent) => {
     e.preventDefault()
-    await loadPatterns(patternFilter, 1, selectedCategory)
+    await loadPatterns(patternFilter, 1, selectedCategories)
   }
 
   const handleClearFilter = async () => {
     setPatternFilter('')
-    await loadPatterns('', 1, selectedCategory)
+    await loadPatterns('', 1, selectedCategories)
+  }
+
+  const handleCategoriesChange = (categories: string[]) => {
+    setSelectedCategories(categories)
   }
 
   const noResults = hasSearched && !isLoading && patterns.length === 0
@@ -161,13 +169,27 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
           type="text"
           value={patternFilter}
           onChange={(e) => setPatternFilter(e.target.value)}
-          placeholder="hat, cardigan, socks…"
+          placeholder="Search patterns (optional)"
           disabled={isLoading}
           className={styles.filterInput}
         />
-        <button type="submit" disabled={isLoading} className={styles.filterButton}>
-          {isLoading ? 'Searching...' : 'Filter'}
+        <button
+          type="button"
+          onClick={() => setIsFilterPanelOpen(true)}
+          disabled={isLoading}
+          className={styles.filterButtonIcon}
+        >
+          Filters {selectedCategories.length > 0 && <span className={styles.badge}>{selectedCategories.length}</span>}
         </button>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortBy)}
+          disabled={isLoading}
+          className={styles.sortSelect}
+        >
+          <option value="rating">Best match</option>
+          <option value="designer">Designer Popularity</option>
+        </select>
       </form>
 
       {patternFilter && (
@@ -201,37 +223,6 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
                 Similar Yarns
               </button>
             </div>
-          </div>
-
-          <div className={styles.sortControls}>
-            <label htmlFor="sort-select">Sort by:</label>
-            <select
-              id="sort-select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortBy)}
-              disabled={isLoading}
-              className={styles.sortSelect}
-            >
-              <option value="rating">Pattern Rating</option>
-              <option value="designer">Designer Popularity</option>
-            </select>
-          </div>
-
-          <div className={styles.categoryControls}>
-            <label htmlFor="category-select">Category:</label>
-            <select
-              id="category-select"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              disabled={isLoading}
-              className={styles.categorySelect}
-            >
-              {PATTERN_CATEGORIES.map((cat) => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.label}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
       )}
@@ -336,6 +327,12 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
           )}
         </>
       )}
+      <FilterPanel
+        isOpen={isFilterPanelOpen}
+        onClose={() => setIsFilterPanelOpen(false)}
+        selectedCategories={selectedCategories}
+        onChange={handleCategoriesChange}
+      />
     </div>
   )
 }
