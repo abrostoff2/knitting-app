@@ -39,7 +39,7 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
 
   return (
     <div className={styles.container}>
-      <h1>Yarn Pattern Matcher</h1>
+      <h1>Yarn Pattern Matcher ✨</h1>
       <p className={styles.subtitle}>Find patterns for the yarn you own</p>
 
       <form onSubmit={handleSearch} className={styles.form}>
