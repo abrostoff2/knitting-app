@@ -1,0 +1,114 @@
+.filterContainer {
+  padding: 1.5rem 0;
+  margin: 2rem 0;
+}
+
+.selectedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  background: #a8d5d8;
+  color: #333;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.chipRemove {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  line-height: 1;
+  margin-left: 0.25rem;
+}
+
+.chipRemove:hover {
+  opacity: 1;
+}
+
+.pillsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.pill {
+  padding: 0.6rem 1.2rem;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: #333;
+  font-weight: 500;
+}
+
+.pill:hover {
+  background: #e8e8e8;
+  border-color: #999;
+}
+
+.pillSubcategory {
+  font-size: 0.88rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  background: #f9f9f9;
+  color: #666;
+}
+
+.pillSubcategory:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.pillActive {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+.pillActive:hover {
+  background: #555;
+  border-color: #555;
+}
+
+.pillActive.pillSubcategory {
+  background: #666;
+}
+
+.showMoreButton {
+  padding: 0.6rem 1rem;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: inherit;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.showMoreButton:hover {
+  color: #333;
+}

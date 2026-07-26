@@ -48,22 +48,29 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
       setSimilarYarnsPage(similarYarnsPageNum)
 
       try {
-        const url = new URL(`${API_URL}/api/yarns/${yarn.id}/patterns`)
+        let url = `${API_URL}/api/yarns/${yarn.id}/patterns`
+        const params = new URLSearchParams()
         if (filter.trim()) {
-          url.searchParams.append('pattern_query', filter)
+          params.append('pattern_query', filter)
         }
         if (category) {
-          url.searchParams.append('category', category)
+          params.append('category', category)
         }
-        url.searchParams.append('page', similarYarnsPageNum.toString())
+        params.append('page', similarYarnsPageNum.toString())
+        if (params.toString()) {
+          url += '?' + params.toString()
+        }
 
+        console.log('Fetching patterns from:', url)
         const res = await fetch(url)
-        if (!res.ok) throw new Error('Failed to load patterns')
+        if (!res.ok) throw new Error(`Failed to load patterns: ${res.status} ${res.statusText}`)
 
         const data = await res.json()
+        console.log('Patterns loaded:', data.patterns.length)
         setPatterns(data.patterns || [])
         setHasMoreSimilarYarns(data.has_more || false)
-      } catch {
+      } catch (error) {
+        console.error('Pattern fetch error:', error)
         setPatterns([])
         setHasMoreSimilarYarns(false)
       } finally {
