@@ -11,6 +11,11 @@ from abc import ABC, abstractmethod
 
 from app.models import YarnDetail
 
+# Map fiber names to Ravelry API equivalents
+FIBER_NAME_MAP = {
+    "linen": "flax",
+}
+
 
 class YarnMatcher(ABC):
     @abstractmethod
@@ -30,7 +35,8 @@ class ExactAttributeMatcher(YarnMatcher):
 
     def build_attribute_query(self, yarn: YarnDetail) -> dict[str, str]:
         fiber_names = "+".join(
-            (f.fiber_type.name or "").lower() for f in yarn.yarn_fibers
+            FIBER_NAME_MAP.get((f.fiber_type.name or "").lower(), (f.fiber_type.name or "").lower())
+            for f in yarn.yarn_fibers
         )
         query = {
             "weight": yarn.yarn_weight.name or "",
