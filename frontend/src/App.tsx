@@ -5,6 +5,8 @@ import { YarnConfirmScreen } from './components/YarnConfirmScreen'
 import { PatternResultsScreen } from './components/PatternResultsScreen'
 import styles from './App.module.css'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 export const App: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('search')
   const [isLoading, setIsLoading] = useState(false)
@@ -21,7 +23,7 @@ export const App: React.FC = () => {
   const handleYarnSelect = async (yarn: Yarn) => {
     setIsLoading(true)
     try {
-      const res = await fetch(`/api/yarns/${yarn.id}`)
+      const res = await fetch(`${API_URL}/api/yarns/${yarn.id}`)
       if (!res.ok) throw new Error('Failed to load yarn details')
       const yarnDetail: YarnDetail = await res.json()
       setSelectedYarn(yarnDetail)

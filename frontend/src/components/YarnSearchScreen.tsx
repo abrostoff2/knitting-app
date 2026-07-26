@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Yarn } from '../types'
 import styles from './YarnSearchScreen.module.css'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 interface Props {
   onSelect: (yarns: Yarn[], query: string) => void
   isLoading: boolean
@@ -20,7 +22,7 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
     setSearched(true)
 
     try {
-      const res = await fetch(`/api/yarns/search?query=${encodeURIComponent(query)}`)
+      const res = await fetch(`${API_URL}/api/yarns/search?query=${encodeURIComponent(query)}`)
       if (!res.ok) throw new Error('Search failed')
       const yarns: Yarn[] = await res.json()
 

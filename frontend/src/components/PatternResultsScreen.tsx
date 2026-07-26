@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react'
 import { MatchedPattern, YarnDetail } from '../types'
 import styles from './PatternResultsScreen.module.css'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 interface Props {
   yarn: YarnDetail
   onBackToSearch: () => void
@@ -46,7 +48,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
       setSimilarYarnsPage(similarYarnsPageNum)
 
       try {
-        const url = new URL(`/api/yarns/${yarn.id}/patterns`, window.location.origin)
+        const url = new URL(`${API_URL}/api/yarns/${yarn.id}/patterns`)
         if (filter.trim()) {
           url.searchParams.append('pattern_query', filter)
         }
