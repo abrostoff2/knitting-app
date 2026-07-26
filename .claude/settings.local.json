@@ -7,7 +7,9 @@
       "Bash(npm create *)",
       "Bash(npm --version)",
       "Read(//usr/local/**)",
-      "Read(//opt/**)"
+      "Read(//opt/**)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
