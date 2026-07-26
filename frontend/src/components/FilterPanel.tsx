@@ -27,14 +27,9 @@ export const FilterPanel: React.FC<Props> = ({
     onChange([])
   }
 
-  const allItems = CATEGORIES.flatMap((category) => [
-    { value: category.value, label: category.label, isCategory: true },
-    ...category.subcategories.map((sub) => ({
-      value: sub.value,
-      label: sub.label,
-      isCategory: false,
-    })),
-  ])
+  const handleApply = () => {
+    onClose()
+  }
 
   return (
     <>
@@ -58,25 +53,42 @@ export const FilterPanel: React.FC<Props> = ({
               )}
             </div>
 
-            <div className={styles.itemsList}>
-              {allItems.map((item) => (
-                <label key={item.value} className={styles.checkboxItem}>
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(item.value)}
-                    onChange={() => toggleCategory(item.value)}
-                  />
-                  <span className={item.isCategory ? styles.categoryLabel : styles.subcategoryLabel}>
-                    {item.label}
-                  </span>
-                </label>
+            <div className={styles.categoriesList}>
+              {CATEGORIES.map((category) => (
+                <div key={category.value} className={styles.categoryGroup}>
+                  <div className={styles.categoryHeader}>
+                    <label className={styles.categoryCheckbox}>
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(category.value)}
+                        onChange={() => toggleCategory(category.value)}
+                      />
+                      <span className={styles.categoryLabel}>{category.label}</span>
+                    </label>
+                  </div>
+
+                  {category.subcategories.length > 0 && (
+                    <div className={styles.subcategoriesList}>
+                      {category.subcategories.map((sub) => (
+                        <label key={sub.value} className={styles.subcategoryCheckbox}>
+                          <input
+                            type="checkbox"
+                            checked={selectedCategories.includes(sub.value)}
+                            onChange={() => toggleCategory(sub.value)}
+                          />
+                          <span className={styles.subcategoryLabel}>{sub.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </div>
 
         <div className={styles.footer}>
-          <button className={styles.applyButton} onClick={onClose}>
+          <button className={styles.applyButton} onClick={handleApply}>
             Apply filters
           </button>
         </div>

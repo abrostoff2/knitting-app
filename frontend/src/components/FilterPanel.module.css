@@ -13,7 +13,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 400px;
+  width: 420px;
   background: white;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
   transform: translateX(100%);
@@ -38,6 +38,8 @@
 .header h2 {
   margin: 0;
   font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .closeButton {
@@ -52,10 +54,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
 }
 
 .closeButton:hover {
   color: #333;
+  background: #f0f0f0;
 }
 
 .content {
@@ -72,14 +77,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .sectionHeader h3 {
   margin: 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .clearAll {
@@ -90,19 +95,32 @@
   font-size: 0.85rem;
   padding: 0;
   text-decoration: underline;
+  font-weight: 500;
+  font-family: inherit;
 }
 
 .clearAll:hover {
   color: #0052a3;
 }
 
-.itemsList {
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.categoryGroup {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.checkboxItem {
+.categoryHeader {
+  display: flex;
+  align-items: center;
+}
+
+.categoryCheckbox {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -110,26 +128,48 @@
   padding: 0.5rem 0;
 }
 
-.checkboxItem input[type="checkbox"] {
+.categoryCheckbox input[type="checkbox"] {
   cursor: pointer;
   width: 18px;
   height: 18px;
-}
-
-.checkboxItem span {
-  font-size: 0.95rem;
-  color: #333;
-  line-height: 1.4;
+  accent-color: #2d5016;
 }
 
 .categoryLabel {
-  font-weight: 500;
-  color: #333;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.subcategoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: 1.5rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid #e0e0e0;
+}
+
+.subcategoryCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.35rem 0;
+}
+
+.subcategoryCheckbox input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #2d5016;
 }
 
 .subcategoryLabel {
   color: #666;
-  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .footer {
@@ -141,15 +181,16 @@
 
 .applyButton {
   flex: 1;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.5rem;
   background: #2d5016;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
+  transition: background 0.2s;
 }
 
 .applyButton:hover {
@@ -159,5 +200,9 @@
 @media (max-width: 768px) {
   .panel {
     width: 100%;
+  }
+
+  .subcategoriesList {
+    margin-left: 1.25rem;
   }
 }

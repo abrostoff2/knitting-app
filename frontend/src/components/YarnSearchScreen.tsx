@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Yarn } from '../types'
+import { FilterPanel } from './FilterPanel'
 import styles from './YarnSearchScreen.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [query, setQuery] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [searched, setSearched] = useState(false)
@@ -52,6 +55,14 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
           autoFocus
           className={styles.input}
         />
+        <button
+          type="button"
+          onClick={() => setIsFilterPanelOpen(true)}
+          disabled={isLoading}
+          className={styles.filterButton}
+        >
+          Filters {selectedCategories.length > 0 && <span className={styles.badge}>{selectedCategories.length}</span>}
+        </button>
         <button type="submit" disabled={isLoading} className={styles.button}>
           {isLoading ? 'Searching...' : 'Search'}
         </button>
@@ -62,6 +73,13 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
       {searched && !error && isLoading && (
         <div className={styles.loading}>Loading yarns...</div>
       )}
+
+      <FilterPanel
+        isOpen={isFilterPanelOpen}
+        onClose={() => setIsFilterPanelOpen(false)}
+        selectedCategories={selectedCategories}
+        onChange={setSelectedCategories}
+      />
     </div>
   )
 }
