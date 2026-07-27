@@ -314,7 +314,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
               </button>
               <span className={styles.pageInfo}>
                 Page {patternsPage} of {patternPagesInBatch}
-                {hasMoreSimilarYarns && ' (more yarns available)'}
+                {hasMoreSimilarYarns && ' (More patterns load as you paginate)'}
               </span>
               <button
                 onClick={handleNextPage}
