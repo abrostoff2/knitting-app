@@ -307,8 +307,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .patternName {
@@ -318,6 +318,7 @@
   line-height: 1.4;
   flex: 1;
   color: #1a1a1a;
+  word-break: break-word;
 }
 
 .viaYarn {
@@ -335,6 +336,8 @@
   border-radius: 6px;
   white-space: nowrap;
   flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0;
 }
 
 .ratingValue {
@@ -352,6 +355,9 @@
   margin: 0 0 0.75rem 0;
   color: #666;
   font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .badges {
@@ -359,15 +365,19 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: auto;
+  min-height: 0;
 }
 
 .badge {
   font-size: 0.75rem;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.65rem;
   border-radius: 4px;
   background: #f0f0f0;
   color: #333;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .free {
