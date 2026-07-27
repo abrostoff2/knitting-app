@@ -107,7 +107,7 @@
   cursor: not-allowed;
 }
 
-.badge {
+.filterBadge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -266,7 +266,7 @@
 
 .patternGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -281,6 +281,7 @@
   display: flex;
   flex-direction: column;
   background: white;
+  height: 100%;
 }
 
 .patternCard:hover {
@@ -355,9 +356,6 @@
   margin: 0 0 0.75rem 0;
   color: #666;
   font-size: 0.9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .badges {
@@ -375,9 +373,7 @@
   background: #f0f0f0;
   color: #333;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 .free {

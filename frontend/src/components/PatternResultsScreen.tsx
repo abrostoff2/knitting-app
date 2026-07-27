@@ -179,7 +179,7 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
           disabled={isLoading}
           className={styles.filterButtonIcon}
         >
-          Filters {selectedCategories.length > 0 && <span className={styles.badge}>{selectedCategories.length}</span>}
+          Filters {selectedCategories.length > 0 && <span className={styles.filterBadge}>{selectedCategories.length}</span>}
         </button>
         <select
           value={sortBy}
