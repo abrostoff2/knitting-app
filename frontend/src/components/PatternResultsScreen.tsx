@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { MatchedPattern, YarnDetail } from '../types'
 import { FilterPanel } from './FilterPanel'
+import { SkeletonCard } from './SkeletonCard'
 import styles from './PatternResultsScreen.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
@@ -227,9 +228,18 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         </div>
       )}
 
-      {isLoading && <div className={styles.loading}>Loading patterns...</div>}
+      {isLoading && (
+        <>
+          <div className={styles.loading}>Searching similar yarns and their patterns...</div>
+          <div className={styles.patternGrid}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </>
+      )}
 
-      {noResults && patternFilter ? (
+      {!isLoading && noResults && patternFilter ? (
         <div className={styles.emptyState}>
           <p>No {patternFilter} patterns found for <strong>{yarn.name}</strong>.</p>
           <p>Try a different term, or <button onClick={handleClearFilter} className={styles.linkButton}>see all patterns for this yarn</button>.</p>
