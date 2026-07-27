@@ -14,7 +14,7 @@
   right: 0;
   bottom: 0;
   width: 420px;
-  background: white;
+  background: #FDFAF4;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
   transform: translateX(100%);
   transition: transform 0.3s ease;
@@ -32,14 +32,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #889278;
 }
 
 .header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .closeButton {
@@ -47,7 +47,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #999;
+  color: #889278;
   padding: 0;
   width: 32px;
   height: 32px;
@@ -59,8 +59,8 @@
 }
 
 .closeButton:hover {
-  color: #333;
-  background: #f0f0f0;
+  color: #3d2817;
+  background: #e8e0d5;
 }
 
 .content {
@@ -84,13 +84,13 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .clearAll {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #BCAA90;
   cursor: pointer;
   font-size: 0.85rem;
   padding: 0;
@@ -100,7 +100,7 @@
 }
 
 .clearAll:hover {
-  color: #0052a3;
+  color: #8b7355;
 }
 
 .categoriesList {
@@ -132,12 +132,12 @@
   cursor: pointer;
   width: 18px;
   height: 18px;
-  accent-color: #2d5016;
+  accent-color: #BCAA90;
 }
 
 .categoryLabel {
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
   font-size: 0.95rem;
   cursor: pointer;
 }
@@ -148,7 +148,7 @@
   gap: 0.5rem;
   margin-left: 1.5rem;
   padding-left: 0.75rem;
-  border-left: 2px solid #e0e0e0;
+  border-left: 2px solid #889278;
 }
 
 .subcategoryCheckbox {
@@ -163,18 +163,18 @@
   cursor: pointer;
   width: 16px;
   height: 16px;
-  accent-color: #2d5016;
+  accent-color: #BCAA90;
 }
 
 .subcategoryLabel {
-  color: #666;
+  color: #889278;
   font-size: 0.9rem;
   cursor: pointer;
 }
 
 .footer {
   padding: 1.5rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #889278;
   display: flex;
   gap: 1rem;
 }
@@ -182,7 +182,7 @@
 .applyButton {
   flex: 1;
   padding: 0.875rem 1.5rem;
-  background: #2d5016;
+  background: #BCAA90;
   color: white;
   border: none;
   border-radius: 6px;
@@ -194,7 +194,7 @@
 }
 
 .applyButton:hover {
-  background: #1f3810;
+  background: #8b7355;
 }
 
 @media (max-width: 768px) {

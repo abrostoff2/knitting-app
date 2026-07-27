@@ -15,8 +15,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.9rem;
-  background: #a8d5d8;
-  color: #333;
+  background: #d9cec0;
+  color: #3d2817;
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -25,7 +25,7 @@
 .chipRemove {
   background: none;
   border: none;
-  color: #333;
+  color: #3d2817;
   cursor: pointer;
   font-size: 1.3rem;
   padding: 0;
@@ -53,55 +53,55 @@
 
 .pill {
   padding: 0.6rem 1.2rem;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
+  background: #e8e0d5;
+  border: 1px solid #889278;
   border-radius: 24px;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
-  color: #333;
+  color: #3d2817;
   font-weight: 500;
 }
 
 .pill:hover {
-  background: #e8e8e8;
-  border-color: #999;
+  background: #dccfc5;
+  border-color: #BCAA90;
 }
 
 .pillSubcategory {
   font-size: 0.88rem;
   font-weight: 400;
   padding: 0.5rem 1rem;
-  background: #f9f9f9;
-  color: #666;
+  background: #f0ede5;
+  color: #889278;
 }
 
 .pillSubcategory:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: #e8e0d5;
+  color: #3d2817;
 }
 
 .pillActive {
-  background: #333;
+  background: #BCAA90;
   color: white;
-  border-color: #333;
+  border-color: #BCAA90;
 }
 
 .pillActive:hover {
-  background: #555;
-  border-color: #555;
+  background: #8b7355;
+  border-color: #8b7355;
 }
 
 .pillActive.pillSubcategory {
-  background: #666;
+  background: #889278;
 }
 
 .showMoreButton {
   padding: 0.6rem 1rem;
   background: none;
   border: none;
-  color: #666;
+  color: #889278;
   cursor: pointer;
   font-size: 0.95rem;
   font-family: inherit;
@@ -110,5 +110,5 @@
 }
 
 .showMoreButton:hover {
-  color: #333;
+  color: #3d2817;
 }

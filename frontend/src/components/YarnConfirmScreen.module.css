@@ -1,12 +1,13 @@
 .container {
   width: 100%;
   padding: 2.5rem 2rem;
+  background-color: #FDFAF4;
 }
 
 .backButton {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #BCAA90;
   font-size: 0.95rem;
   cursor: pointer;
   padding: 0;
@@ -22,12 +23,12 @@
 h2 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
   margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-  color: #666;
+  color: #889278;
   margin: 0 0 2.5rem 0;
   font-size: 1rem;
 }
@@ -40,7 +41,7 @@ h2 {
 }
 
 .card {
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
@@ -49,7 +50,7 @@ h2 {
 }
 
 .card:hover {
-  border-color: #333;
+  border-color: #BCAA90;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
 }
@@ -69,32 +70,32 @@ h2 {
   margin: 0 0 0.75rem 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .company {
   margin: 0.25rem 0;
-  color: #666;
+  color: #889278;
   font-size: 0.95rem;
   font-weight: 500;
 }
 
 .weight {
   margin: 0.75rem 0 0 0;
-  color: #999;
+  color: #889278;
   font-size: 0.85rem;
 }
 
 .rating {
   margin: 0.75rem 0 0 0;
-  color: #666;
+  color: #889278;
   font-size: 0.9rem;
   font-weight: 500;
 }
 
 .infoBox {
-  background: #f0f7ff;
-  border: 1px solid #bae6fd;
+  background: #f5f0e8;
+  border: 1px solid #889278;
   border-radius: 8px;
   padding: 1.5rem;
   margin-top: 2rem;
@@ -102,7 +103,7 @@ h2 {
 
 .hint {
   margin: 0;
-  color: #0c63e4;
+  color: #3d2817;
   font-size: 0.95rem;
   line-height: 1.5;
 }

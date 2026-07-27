@@ -1,18 +1,19 @@
 .container {
   width: 100%;
   padding: 2.5rem 2rem;
+  background-color: #FDFAF4;
 }
 
 .header {
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #889278;
 }
 
 .backButton {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #BCAA90;
   font-size: 0.95rem;
   cursor: pointer;
   padding: 0;
@@ -42,12 +43,12 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .company {
   margin: 0.5rem 0 0 0;
-  color: #666;
+  color: #889278;
   font-size: 0.95rem;
 }
 
@@ -64,7 +65,7 @@
   min-width: 300px;
   padding: 0.875rem 1rem;
   font-size: 0.95rem;
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 6px;
   font-family: inherit;
   background: white;
@@ -72,12 +73,12 @@
 
 .filterInput:focus {
   outline: none;
-  border-color: #333;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+  border-color: #BCAA90;
+  box-shadow: 0 0 0 3px rgba(188, 170, 144, 0.08);
 }
 
 .filterInput::placeholder {
-  color: #999;
+  color: #889278;
 }
 
 .filterButtonIcon {
@@ -88,8 +89,8 @@
   font-size: 0.95rem;
   font-weight: 500;
   background: white;
-  color: #333;
-  border: 1px solid #ddd;
+  color: #3d2817;
+  border: 1px solid #889278;
   border-radius: 6px;
   cursor: pointer;
   font-family: inherit;
@@ -98,8 +99,8 @@
 }
 
 .filterButtonIcon:hover:not(:disabled) {
-  border-color: #333;
-  background: #f9f9f9;
+  border-color: #BCAA90;
+  background: #faf8f5;
 }
 
 .filterButtonIcon:disabled {
@@ -113,7 +114,7 @@
   justify-content: center;
   width: 22px;
   height: 22px;
-  background: #2d5016;
+  background: #BCAA90;
   color: white;
   border-radius: 50%;
   font-size: 0.8rem;
@@ -123,29 +124,29 @@
 .sortSelect {
   padding: 0.875rem 1rem;
   font-size: 0.95rem;
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 6px;
   font-family: inherit;
   background: white;
   cursor: pointer;
-  color: #333;
+  color: #3d2817;
   transition: all 0.2s;
 }
 
 .sortSelect:focus {
   outline: none;
-  border-color: #333;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+  border-color: #BCAA90;
+  box-shadow: 0 0 0 3px rgba(188, 170, 144, 0.08);
 }
 
 .sortSelect:disabled {
-  background: #f0f0f0;
+  background: #e8e0d5;
   cursor: not-allowed;
-  color: #999;
+  color: #889278;
 }
 
 .activeFilter {
-  color: #666;
+  color: #889278;
   font-size: 0.9rem;
   margin: 1rem 0;
 }
@@ -153,7 +154,7 @@
 .clearFilter {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #BCAA90;
   cursor: pointer;
   padding: 0;
   margin-left: 0.5rem;
@@ -163,12 +164,12 @@
 }
 
 .clearFilter:hover {
-  color: #0052a3;
+  color: #8b7355;
 }
 
 .loading {
   text-align: center;
-  color: #666;
+  color: #889278;
   padding: 3rem 1rem;
   font-size: 1rem;
 }
@@ -176,7 +177,7 @@
 .emptyState {
   text-align: center;
   padding: 4rem 2rem;
-  color: #666;
+  color: #889278;
 }
 
 .emptyState p {
@@ -186,7 +187,7 @@
 .linkButton {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #BCAA90;
   cursor: pointer;
   padding: 0;
   font-family: inherit;
@@ -195,7 +196,7 @@
 }
 
 .linkButton:hover {
-  color: #0052a3;
+  color: #8b7355;
 }
 
 .controlsRow {
@@ -214,14 +215,14 @@
 
 .sourceControls label {
   font-weight: 600;
-  color: #333;
+  color: #3d2817;
   font-size: 0.95rem;
 }
 
 .sourceToggle {
   display: flex;
   gap: 0;
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 6px;
   background: white;
 }
@@ -230,13 +231,13 @@
   padding: 0.625rem 1.25rem;
   border: none;
   background: white;
-  color: #333;
+  color: #3d2817;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
   font-family: inherit;
   transition: all 0.2s;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #889278;
 }
 
 .sourceButton:last-child {
@@ -244,11 +245,11 @@
 }
 
 .sourceButton:hover:not(:disabled) {
-  background: #f9f9f9;
+  background: #faf8f5;
 }
 
 .sourceButton.active {
-  background: #1a1a1a;
+  background: #BCAA90;
   color: white;
 }
 
@@ -260,7 +261,7 @@
 .sectionTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #333;
+  color: #3d2817;
   margin: 2.5rem 0 1.5rem 0;
 }
 
@@ -272,7 +273,7 @@
 }
 
 .patternCard {
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
@@ -285,7 +286,7 @@
 }
 
 .patternCard:hover {
-  border-color: #333;
+  border-color: #BCAA90;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
 }
@@ -318,13 +319,13 @@
   font-weight: 600;
   line-height: 1.4;
   flex: 1;
-  color: #1a1a1a;
+  color: #3d2817;
   word-break: break-word;
 }
 
 .viaYarn {
   font-size: 0.8rem;
-  color: #999;
+  color: #889278;
   margin: 0.25rem 0 0 0;
 }
 
@@ -344,7 +345,7 @@
 .ratingValue {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .ratingLabel {
@@ -354,7 +355,7 @@
 
 .designer {
   margin: 0 0 0.75rem 0;
-  color: #666;
+  color: #889278;
   font-size: 0.9rem;
 }
 
@@ -370,8 +371,8 @@
   font-size: 0.75rem;
   padding: 0.4rem 0.65rem;
   border-radius: 4px;
-  background: #f0f0f0;
-  color: #333;
+  background: #e8e0d5;
+  color: #3d2817;
   font-weight: 500;
   flex-shrink: 0;
 }
@@ -393,13 +394,13 @@
   gap: 2rem;
   margin-top: 4rem;
   padding: 3rem 0 0;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #889278;
 }
 
 .paginationButton {
   padding: 0.75rem 1.5rem;
   font-size: 0.95rem;
-  background: #2d5016;
+  background: #BCAA90;
   color: white;
   border: none;
   border-radius: 6px;
@@ -410,16 +411,16 @@
 }
 
 .paginationButton:hover:not(:disabled) {
-  background: #1f3810;
+  background: #8b7355;
 }
 
 .paginationButton:disabled {
-  background: #ccc;
+  background: #889278;
   cursor: not-allowed;
 }
 
 .pageInfo {
   font-size: 0.95rem;
-  color: #666;
+  color: #889278;
   font-weight: 500;
 }

@@ -1,19 +1,31 @@
 .container {
   width: 100%;
   padding: 3rem 2rem;
+  background-color: #FDFAF4;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0rem;
+}
+
+.logo {
+  width: 250px;
+  height: 250px;
 }
 
 h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #3d2817;
   margin: 0 0 0.5rem 0;
   text-align: center;
 }
 
 .subtitle {
   font-size: 1.1rem;
-  color: #666;
+  color: #889278;
   margin: 0 0 2.5rem 0;
   text-align: center;
 }
@@ -31,7 +43,7 @@ h1 {
   flex: 1;
   padding: 1rem;
   font-size: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 6px;
   font-family: inherit;
   background: white;
@@ -39,8 +51,8 @@ h1 {
 
 .input:focus {
   outline: none;
-  border-color: #333;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+  border-color: #889278;
+  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.08);
 }
 
 .input:disabled {
@@ -56,8 +68,8 @@ h1 {
   font-size: 1rem;
   font-weight: 600;
   background: white;
-  color: #333;
-  border: 1px solid #ddd;
+  color: #3d2817;
+  border: 1px solid #889278;
   border-radius: 6px;
   cursor: pointer;
   font-family: inherit;
@@ -66,8 +78,8 @@ h1 {
 }
 
 .filterButton:hover:not(:disabled) {
-  border-color: #333;
-  background: #f9f9f9;
+  border-color: #889278;
+  background: #faf8f5;
 }
 
 .filterButton:disabled {
@@ -81,7 +93,7 @@ h1 {
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: #2d5016;
+  background: #BCAA90;
   color: white;
   border-radius: 50%;
   font-size: 0.8rem;
@@ -92,7 +104,7 @@ h1 {
   padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
-  background: #2d5016;
+  background: #BCAA90;
   color: white;
   border: none;
   border-radius: 6px;
@@ -102,7 +114,7 @@ h1 {
 }
 
 .button:hover:not(:disabled) {
-  background: #1f3810;
+  background: #8b7355;
 }
 
 .button:disabled {
@@ -125,7 +137,7 @@ h1 {
 .loading {
   margin-top: 2rem;
   text-align: center;
-  color: #666;
+  color: #889278;
   font-size: 1rem;
 }
 
@@ -135,7 +147,7 @@ h1 {
 
 .yarnsLabel {
   font-size: 0.95rem;
-  color: #666;
+  color: #889278;
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -147,7 +159,7 @@ h1 {
 }
 
 .card {
-  border: 1px solid #ddd;
+  border: 1px solid #889278;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
@@ -156,7 +168,7 @@ h1 {
 }
 
 .card:hover {
-  border-color: #333;
+  border-color: #889278;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
 }
@@ -176,24 +188,24 @@ h1 {
   margin: 0 0 0.75rem 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #3d2817;
 }
 
 .company {
   margin: 0.25rem 0;
-  color: #666;
+  color: #889278;
   font-size: 0.95rem;
 }
 
 .weight {
   margin: 0.75rem 0 0 0;
-  color: #999;
+  color: #a89080;
   font-size: 0.85rem;
 }
 
 .rating {
   margin: 0.75rem 0 0 0;
-  color: #666;
+  color: #889278;
   font-size: 0.9rem;
   font-weight: 500;
 }

@@ -1,14 +1,14 @@
 .app {
   min-height: 100vh;
-  background: #fafafa;
+  background: #FDFAF4;
   display: flex;
   flex-wrap: wrap;
 }
 
 .sidebar {
   width: 280px;
-  background: white;
-  border-right: 1px solid #e0e0e0;
+  background: #FDFAF4;
+  border-right: 1px solid #889278;
   padding: 2.5rem 1.75rem;
   flex-shrink: 0;
   display: flex;
@@ -30,19 +30,19 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #f0f0f0;
+  background: #e8e0d5;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 1.25rem;
-  color: #999;
+  color: #889278;
   flex-shrink: 0;
   transition: all 0.2s;
 }
 
 .step.active .stepNumber {
-  background: #1a1a1a;
+  background: #BCAA90;
   color: white;
   transform: scale(1.05);
 }
@@ -54,23 +54,23 @@
 .stepContent h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #333;
+  color: #3d2817;
   margin: 0 0 0.5rem 0;
 }
 
 .step.inactive .stepContent h3 {
-  color: #999;
+  color: #889278;
 }
 
 .stepContent p {
   font-size: 0.85rem;
-  color: #666;
+  color: #889278;
   margin: 0;
   line-height: 1.5;
 }
 
 .step.inactive .stepContent p {
-  color: #999;
+  color: #889278;
 }
 
 .stepIcon {
@@ -108,7 +108,7 @@
   .sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #889278;
     flex-direction: row;
     padding: 1.5rem;
     gap: 2rem;

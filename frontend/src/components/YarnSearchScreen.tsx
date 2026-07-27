@@ -42,8 +42,11 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
 
   return (
     <div className={styles.container}>
-      <h1>Yarn Pattern Matcher ✨</h1>
-      <p className={styles.subtitle}>Find patterns for the yarn you own</p>
+      <div className={styles.logoContainer}>
+        <img src="/stashmatch-logo.png" alt="StashMatch" className={styles.logo} />
+      </div>
+      <h1>Stash Match</h1>
+      <p className={styles.subtitle}>Discover what to make with any yarn</p>
 
       <form onSubmit={handleSearch} className={styles.form}>
         <input
