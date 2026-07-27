@@ -70,7 +70,7 @@ async def find_patterns_for_yarn(
         )
 
     logger.info("Fetching patterns for exact source yarn")
-    source_query = source_yarn.name
+    source_query = source_yarn.permalink
     if pattern_query:
         source_query = f"{source_query} {pattern_query}"
     exact_response = await client.search_patterns(source_query, category=category)
@@ -86,7 +86,7 @@ async def find_patterns_for_yarn(
 
     async def search_with_limit(yarn):
         async with semaphore:
-            query = yarn.name
+            query = yarn.permalink
             if pattern_query:
                 query = f"{query} {pattern_query}"
             return await client.search_patterns(query, category=category)
