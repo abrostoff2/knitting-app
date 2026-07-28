@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { CATEGORIES } from '../data/categories'
 import styles from './FilterPanel.module.css'
 
@@ -19,25 +19,37 @@ export const FilterPanel: React.FC<Props> = ({
   selectedCrafts = [],
   onCraftsChange,
 }) => {
-  const handleCraftChange = (craft: string) => {
-    const updated = selectedCrafts.includes(craft)
-      ? selectedCrafts.filter((c) => c !== craft)
-      : [...selectedCrafts, craft]
-    onCraftsChange?.(updated)
-  }
-  const toggleCategory = (categoryValue: string) => {
-    if (selectedCategories.includes(categoryValue)) {
-      onChange(selectedCategories.filter((c) => c !== categoryValue))
-    } else {
-      onChange([...selectedCategories, categoryValue])
+  const [tempCrafts, setTempCrafts] = useState<string[]>(selectedCrafts)
+  const [tempCategories, setTempCategories] = useState<string[]>(selectedCategories)
+
+  useEffect(() => {
+    if (isOpen) {
+      setTempCrafts(selectedCrafts)
+      setTempCategories(selectedCategories)
     }
+  }, [isOpen, selectedCrafts, selectedCategories])
+
+  const handleCraftChange = (craft: string) => {
+    setTempCrafts((prev) =>
+      prev.includes(craft) ? prev.filter((c) => c !== craft) : [...prev, craft]
+    )
+  }
+
+  const toggleCategory = (categoryValue: string) => {
+    setTempCategories((prev) =>
+      prev.includes(categoryValue)
+        ? prev.filter((c) => c !== categoryValue)
+        : [...prev, categoryValue]
+    )
   }
 
   const clearAll = () => {
-    onChange([])
+    setTempCategories([])
   }
 
   const handleApply = () => {
+    onChange(tempCategories)
+    onCraftsChange?.(tempCrafts)
     onClose()
   }
 
@@ -63,7 +75,7 @@ export const FilterPanel: React.FC<Props> = ({
                   <label className={styles.categoryCheckbox}>
                     <input
                       type="checkbox"
-                      checked={selectedCrafts.includes('knitting')}
+                      checked={tempCrafts.includes('knitting')}
                       onChange={() => handleCraftChange('knitting')}
                     />
                     <span className={styles.categoryLabel}>Knitting</span>
@@ -75,7 +87,7 @@ export const FilterPanel: React.FC<Props> = ({
                   <label className={styles.categoryCheckbox}>
                     <input
                       type="checkbox"
-                      checked={selectedCrafts.includes('crochet')}
+                      checked={tempCrafts.includes('crochet')}
                       onChange={() => handleCraftChange('crochet')}
                     />
                     <span className={styles.categoryLabel}>Crochet</span>
@@ -102,7 +114,7 @@ export const FilterPanel: React.FC<Props> = ({
                     <label className={styles.categoryCheckbox}>
                       <input
                         type="checkbox"
-                        checked={selectedCategories.includes(category.value)}
+                        checked={tempCategories.includes(category.value)}
                         onChange={() => toggleCategory(category.value)}
                       />
                       <span className={styles.categoryLabel}>{category.label}</span>
@@ -115,7 +127,7 @@ export const FilterPanel: React.FC<Props> = ({
                         <label key={sub.value} className={styles.subcategoryCheckbox}>
                           <input
                             type="checkbox"
-                            checked={selectedCategories.includes(sub.value)}
+                            checked={tempCategories.includes(sub.value)}
                             onChange={() => toggleCategory(sub.value)}
                           />
                           <span className={styles.subcategoryLabel}>{sub.label}</span>
