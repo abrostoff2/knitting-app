@@ -6,7 +6,7 @@ export const LoadingScreen: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.spinner}></div>
-        <h1>StashMatch</h1>
+        <h1>Stash Match</h1>
         <p>Starting up...</p>
       </div>
     </div>
