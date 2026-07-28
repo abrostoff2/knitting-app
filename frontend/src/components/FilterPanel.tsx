@@ -7,6 +7,8 @@ interface Props {
   onClose: () => void
   selectedCategories: string[]
   onChange: (categories: string[]) => void
+  selectedCrafts?: string[]
+  onCraftsChange?: (crafts: string[]) => void
 }
 
 export const FilterPanel: React.FC<Props> = ({
@@ -14,7 +16,15 @@ export const FilterPanel: React.FC<Props> = ({
   onClose,
   selectedCategories,
   onChange,
+  selectedCrafts = [],
+  onCraftsChange,
 }) => {
+  const handleCraftChange = (craft: string) => {
+    const updated = selectedCrafts.includes(craft)
+      ? selectedCrafts.filter((c) => c !== craft)
+      : [...selectedCrafts, craft]
+    onCraftsChange?.(updated)
+  }
   const toggleCategory = (categoryValue: string) => {
     if (selectedCategories.includes(categoryValue)) {
       onChange(selectedCategories.filter((c) => c !== categoryValue))
@@ -43,6 +53,38 @@ export const FilterPanel: React.FC<Props> = ({
         </div>
 
         <div className={styles.content}>
+          <div className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h3>Craft</h3>
+            </div>
+            <div className={styles.categoriesList}>
+              <div className={styles.categoryGroup}>
+                <div className={styles.categoryHeader}>
+                  <label className={styles.categoryCheckbox}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCrafts.includes('knitting')}
+                      onChange={() => handleCraftChange('knitting')}
+                    />
+                    <span className={styles.categoryLabel}>Knitting</span>
+                  </label>
+                </div>
+              </div>
+              <div className={styles.categoryGroup}>
+                <div className={styles.categoryHeader}>
+                  <label className={styles.categoryCheckbox}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCrafts.includes('crochet')}
+                      onChange={() => handleCraftChange('crochet')}
+                    />
+                    <span className={styles.categoryLabel}>Crochet</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
               <h3>Pattern Categories</h3>

@@ -197,6 +197,20 @@
   background: #8b7355;
 }
 
+.categoryCheckbox input[type="checkbox"] {
+  cursor: pointer;
+  pointer-events: auto;
+  accent-color: #BCAA90;
+}
+
+.categoryCheckbox {
+  pointer-events: auto;
+}
+
+.categoryGroup:has(.categoryCheckbox:only-child) {
+  margin-bottom: -1rem;
+}
+
 @media (max-width: 768px) {
   .panel {
     width: 100%;

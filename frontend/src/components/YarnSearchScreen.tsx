@@ -13,6 +13,7 @@ interface Props {
 export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCrafts, setSelectedCrafts] = useState<string[]>([])
   const [query, setQuery] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [searched, setSearched] = useState(false)
@@ -82,6 +83,8 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
         onClose={() => setIsFilterPanelOpen(false)}
         selectedCategories={selectedCategories}
         onChange={setSelectedCategories}
+        selectedCrafts={selectedCrafts}
+        onCraftsChange={setSelectedCrafts}
       />
     </div>
   )
