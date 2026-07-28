@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Yarn, YarnDetail, Screen } from './types'
 import { YarnSearchScreen } from './components/YarnSearchScreen'
 import { YarnConfirmScreen } from './components/YarnConfirmScreen'
 import { PatternResultsScreen } from './components/PatternResultsScreen'
+import { LoadingScreen } from './components/LoadingScreen'
 import styles from './App.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
@@ -13,6 +14,12 @@ export const App: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Yarn[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedYarn, setSelectedYarn] = useState<YarnDetail | null>(null)
+  const [isInitializing, setIsInitializing] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsInitializing(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleYarnSearch = (yarns: Yarn[], query: string) => {
     setSearchResults(yarns)
@@ -39,6 +46,10 @@ export const App: React.FC = () => {
     setScreen('search')
     setSearchResults([])
     setSelectedYarn(null)
+  }
+
+  if (isInitializing) {
+    return <LoadingScreen />
   }
 
   return (

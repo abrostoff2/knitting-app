@@ -16,6 +16,7 @@ Concrete, near-term, actionable items. Bigger open questions and direction live 
 
 ## Done
 
+- Add loading splash screen during app startup to indicate the app is responding (not frozen during cold starts on Render)
 - implement pre-commit hook which includes linting and running uv lock and make sure that it works then push
 - Add parameter sort=popularity to both yarn search and pattern search 
 - Add filtering based on category filtered like this 
