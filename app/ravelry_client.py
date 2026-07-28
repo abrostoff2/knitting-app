@@ -59,11 +59,17 @@ class RavelryClient:
 
     @cached(ttl_seconds=1800)
     async def search_patterns(
-        self, query: str, sort: str | None = None, category: str | None = None
+        self,
+        query: str,
+        sort: str | None = None,
+        category: str | None = None,
+        craft: str | None = None,
     ) -> PatternSearchResponse:
         params = {"query": query, "sort": sort or "popularity"}
         if category:
             params["pc"] = category
+        if craft:
+            params["craft"] = craft
         logger.info(f"GET /patterns/search.json?{params}")
         resp = await self._client.get("/patterns/search.json", params=params)
         resp.raise_for_status()

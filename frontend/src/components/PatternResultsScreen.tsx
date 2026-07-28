@@ -40,11 +40,12 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   const [hasMoreSimilarYarns, setHasMoreSimilarYarns] = useState(false)
   const [sortBy, setSortBy] = useState<SortBy>('rating')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCrafts, setSelectedCrafts] = useState<string[]>([])
   const [patternSource, setPatternSource] = useState<PatternSource>('exact')
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
 
   const loadPatterns = useCallback(
-    async (filter: string, similarYarnsPageNum: number = 1, categories: string[] = []) => {
+    async (filter: string, similarYarnsPageNum: number = 1, categories: string[] = [], crafts: string[] = []) => {
       setIsLoading(true)
       setHasSearched(true)
       setPatternsPage(1)
@@ -58,6 +59,9 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         }
         if (categories.length > 0) {
           params.append('category', categories.join('|'))
+        }
+        if (crafts.length > 0) {
+          params.append('craft', crafts.join('|'))
         }
         params.append('page', similarYarnsPageNum.toString())
         if (params.toString()) {
@@ -84,9 +88,8 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
   )
 
   React.useEffect(() => {
-    loadPatterns(patternFilter, 1, selectedCategories)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPatterns, selectedCategories])
+    loadPatterns(patternFilter, 1, selectedCategories, selectedCrafts)
+  }, [loadPatterns, patternFilter, selectedCategories, selectedCrafts])
 
   React.useEffect(() => {
     if (hasSearched) {
@@ -342,6 +345,8 @@ export const PatternResultsScreen: React.FC<Props> = ({ yarn, onBackToSearch }) 
         onClose={() => setIsFilterPanelOpen(false)}
         selectedCategories={selectedCategories}
         onChange={handleCategoriesChange}
+        selectedCrafts={selectedCrafts}
+        onCraftsChange={setSelectedCrafts}
       />
     </div>
   )

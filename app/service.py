@@ -36,6 +36,7 @@ async def find_patterns_for_yarn(
     pattern_query: str = "",
     page: int = 1,
     category: str | None = None,
+    craft: str | None = None,
 ) -> YarnPatternMatches:
     logger.info(f"Finding patterns for yarn ID {yarn_id}, page {page}")
     source_yarn = await client.get_yarn(yarn_id)
@@ -73,7 +74,7 @@ async def find_patterns_for_yarn(
     source_query = source_yarn.permalink
     if pattern_query:
         source_query = f"{source_query} {pattern_query}"
-    exact_response = await client.search_patterns(source_query, category=category)
+    exact_response = await client.search_patterns(source_query, category=category, craft=craft)
     exact_patterns = exact_response.patterns
     logger.info(f"Found {len(exact_patterns)} exact-match pattern(s)")
 
@@ -89,7 +90,7 @@ async def find_patterns_for_yarn(
             query = yarn.permalink
             if pattern_query:
                 query = f"{query} {pattern_query}"
-            return await client.search_patterns(query, category=category)
+            return await client.search_patterns(query, category=category, craft=craft)
 
     pattern_responses = await asyncio.gather(
         *(search_with_limit(y) for y in page_similar)

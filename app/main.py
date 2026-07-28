@@ -71,7 +71,11 @@ async def get_yarn(yarn_id: int):
 
 @app.get("/api/yarns/{yarn_id}/patterns", response_model=YarnPatternMatches)
 async def patterns_for_yarn(
-    yarn_id: int, pattern_query: str = "", page: int = 1, category: str | None = None
+    yarn_id: int,
+    pattern_query: str = "",
+    page: int = 1,
+    category: str | None = None,
+    craft: str | None = None,
 ):
     msg = f"Finding patterns for yarn {yarn_id}"
     if pattern_query:
@@ -83,7 +87,7 @@ async def patterns_for_yarn(
     logger.info(msg)
     try:
         result = await find_patterns_for_yarn(
-            _client(app), get_matcher(), yarn_id, pattern_query, page, category
+            _client(app), get_matcher(), yarn_id, pattern_query, page, category, craft
         )
         logger.info(
             f"Found {len(result.patterns)} pattern(s) for yarn {yarn_id} "
