@@ -20,7 +20,7 @@ export const CATEGORIES: CategoryGroup[] = [
       { value: 'shrug', label: 'Shrug' },
       { value: 'skirt', label: 'Skirt' },
       { value: 'sweater', label: 'Sweater' },
-      { value: 'top', label: 'Top' },
+      { value: 'tops', label: 'Top' },
       { value: 'sleeveless-top', label: 'Sleeveless Top' },
       { value: 'strapless-top', label: 'Strapless Top' },
       { value: 'tee', label: 'Tee' },
