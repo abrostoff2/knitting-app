@@ -11,3 +11,6 @@ wheels/
 
 # Environment variables / secrets
 .env
+
+# GTM (Google Tag Manager) configuration
+gtm.md
