@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "spec.md",
+                "file": "todo.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "spec"
+              "title": "todo"
             }
           }
         ]
@@ -185,8 +185,8 @@
   },
   "active": "2ab905dcb0066b98",
   "lastOpenFiles": [
+    "spec.md",
     "priorities.md",
-    "todo.md",
-    "spec.md"
+    "todo.md"
   ]
 }

@@ -9,6 +9,7 @@ Full context lives in `docs/` — read the relevant file before making non-trivi
 - @docs/todo.md — concrete next steps
 - @docs/changelog.md — what's shipped, newest first
 - @docs/feedback.md — dated feedback log
+- @docs/gtm.md — go-to-market plan: positioning, channels, sequence, what to measure
 
 ## Commands
 
