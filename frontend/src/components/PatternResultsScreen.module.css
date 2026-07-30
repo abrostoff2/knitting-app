@@ -424,3 +424,157 @@
   color: #889278;
   font-weight: 500;
 }
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .backButton {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .yarnInfo {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .yarnPhoto {
+    width: 80px;
+    height: 80px;
+  }
+
+  .yarnInfo h2 {
+    font-size: 1.2rem;
+  }
+
+  .company {
+    font-size: 0.9rem;
+  }
+
+  .filterForm {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .filterInput {
+    min-width: unset;
+    width: 100%;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.95rem;
+  }
+
+  .filterButtonIcon,
+  .sortSelect {
+    width: 100%;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .activeFilter {
+    font-size: 0.85rem;
+    margin: 0.75rem 0;
+  }
+
+  .controlsRow {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem 0;
+    align-items: stretch;
+  }
+
+  .sourceControls {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .sourceToggle {
+    width: 100%;
+  }
+
+  .sourceButton {
+    flex: 1;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.85rem;
+  }
+
+  .patternGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .patternPhoto {
+    height: 150px;
+  }
+
+  .patternContent {
+    padding: 0.875rem;
+  }
+
+  .patternHeader {
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .patternName {
+    font-size: 0.85rem;
+  }
+
+  .viaYarn {
+    font-size: 0.75rem;
+  }
+
+  .patternRating {
+    padding: 0.375rem 0.5rem;
+  }
+
+  .ratingValue {
+    font-size: 0.8rem;
+  }
+
+  .designer {
+    font-size: 0.8rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .pagination {
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 2rem 0 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .paginationButton {
+    padding: 0.625rem 1rem;
+    font-size: 0.8rem;
+    flex: 0 1 auto;
+  }
+
+  .pageInfo {
+    font-size: 0.8rem;
+    flex-basis: 100%;
+    order: -1;
+  }
+
+  .sectionTitle {
+    font-size: 1rem;
+    margin: 2rem 0 1rem 0;
+  }
+}
