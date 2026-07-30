@@ -17,6 +17,7 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
   const [query, setQuery] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [searched, setSearched] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,6 +25,7 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
 
     setError(null)
     setSearched(true)
+    setIsSearching(true)
 
     try {
       const res = await fetch(`${API_URL}/api/yarns/search?query=${encodeURIComponent(query)}`)
@@ -32,12 +34,14 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
 
       if (yarns.length === 0) {
         setError(`No yarns found for '${query}'. Check the spelling or try the yarn's full name.`)
+        setIsSearching(false)
         return
       }
 
       onSelect(yarns, query)
     } catch {
       setError('Failed to search. Please try again.')
+      setIsSearching(false)
     }
   }
 
@@ -67,8 +71,8 @@ export const YarnSearchScreen: React.FC<Props> = ({ onSelect, isLoading }) => {
         >
           Filters {selectedCategories.length > 0 && <span className={styles.badge}>{selectedCategories.length}</span>}
         </button>
-        <button type="submit" disabled={isLoading} className={styles.button}>
-          {isLoading ? 'Searching...' : 'Search'}
+        <button type="submit" disabled={isLoading || isSearching} className={styles.button}>
+          {isSearching ? <div className={styles.buttonSpinner}></div> : 'Search'}
         </button>
       </form>
 
